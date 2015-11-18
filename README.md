@@ -1,9 +1,5 @@
-# react-buttons
-[React](http://facebook.github.io/react/) buttons. Exports a commonjs module that can be used with [webpack](http://webpack.github.io/). Source is in ES6 and is compiled down to ES5 using [Babel](https://babeljs.io/).
-
-[![Build Status](http://img.shields.io/travis/ship-components/react-buttons/master.svg?style=flat)](https://travis-ci.org/ship-components/react-buttons)
-[![Coverage](http://img.shields.io/coveralls/ship-components/react-buttons.svg?style=flat)](https://coveralls.io/github/ship-components)
-[![devDependencies](https://img.shields.io/david/dev/ship-components/react-buttons.svg?style=flat)](https://david-dm.org/ship-components/react-buttons#info=devDependencies)
+# react-dropdown-menu
+[React](http://facebook.github.io/react/) dropdown menu. Exports a commonjs module that can be used with [webpack](http://webpack.github.io/). Source is in ES6 and is compiled down to ES5 using [Babel](https://babeljs.io/).
 
 ## Usage
 
@@ -11,36 +7,33 @@
 The component is written using ES6/JSX therefore Babel is recommended to use it. The below example is based on using [webpack](http://webpack.github.io/) and [babel-loader](https://github.com/babel/babel-loader).
 ```js
 import React from 'react';
-import { Button } from 'react-buttons/src';
+import DropdownMenu from 'react-dropdown-menu';
 
-export default class Dialog extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      clicked: false
-    };
-  }
-
-  handleClick(event) {
-    this.setState({
-      clicked: true
-    });
-  }
+export default class BasicExample extends React.Component
 
   render() {
     return (
-        <div className='form-group'>
-          <Button onClick={this.handleClick.bind(this)}>
-            Click Me!
-          </Button>
-        </div>
+      <DropdownMenu
+        menuIconClass='ion-navicon'
+        items={[
+            {
+                name: 'Add',
+                iconClass: 'icon-plus',
+                action: function() {}
+            },
+            {
+                name: 'Remove',
+                iconClass: 'icon-minus',
+                action: function() {}
+            }]
+      }/>
     );
   }
 }
 ```
 
 ## Examples and Development
-Examples can be found in the `examples/` folder. A development server can be run with:
+More examples can be found in the `examples/` folder. A development server can be run with:
 
 ```shell
 $ npm install
@@ -53,7 +46,7 @@ which will live reload any changes you make and serve them at http://localhost:8
 This module is designed to be used with webpack but requires a few loaders if you are pulling the source into another project.
 
 ```shell
-$ npm install webpack babel-loader css-loader style-loader postcss-loader extract-text-webpack-plugin postcss-nested postcss-color-hex-alpha postcss-color-function postcss-calc autoprefixer --save-dev
+$ npm install webpack babel-loader css-loader style-loader postcss-loader extract-text-webpack-plugin postcss-nested postcss-color-hex-alpha postcss-color-function postcss-calc postcss-simple-vars autoprefixer --save-dev
 ```
 
 Below are is a sample of how to setup the loaders:
@@ -86,6 +79,15 @@ Below are is a sample of how to setup the loaders:
   // CSS Modules
   postcss: [
     require('postcss-nested'),
+    require('postcss-simple-vars') {
+      variables: {
+        'base-grid-size' : '4px',
+        'primary-color': '#38b889',
+        'primary-font-color': '#333',
+        'inverse-font-color': '#fff',
+        'primary-background-color' : '#fff'
+      }
+    },
     require('postcss-color-hex-alpha'),
     require('postcss-color-function'),
     require('postcss-calc'),

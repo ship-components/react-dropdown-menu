@@ -1,8 +1,8 @@
 {
-  "name": "react-buttons",
+  "name": "react-dropdown-menu",
   "version": "0.1.0",
   "description": "Material Design React Buttons",
-  "main": "src/index.js",
+  "main": "src/DropdownMenu.js",
   "scripts": {
     "start": "grunt server",
     "build": "grunt build",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ship-components/react-buttons.git"
+    "url": "git+https://github.com/ship-components/react-dropdown-menu.git"
   },
   "keywords": [
     "react"
@@ -18,9 +18,9 @@
   "author": "Isaac Suttell <isaac@isaacsuttell.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ship-components/react-buttons/issues"
+    "url": "https://github.com/ship-components/react-dropdown-menu/issues"
   },
-  "homepage": "https://github.com/ship-components/react-buttons#readme",
+  "homepage": "https://github.com/ship-components/react-dropdown-menu#readme",
   "devDependencies": {
     "autoprefixer": "^6.1.0",
     "babel": "^6.0.15",

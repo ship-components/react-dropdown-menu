@@ -1,7 +1,7 @@
 /** ****************************************************************************
  * DropdownMenu
  *
- * @author       Isaac Suttell <isaac_suttell@playstation.sony.com>
+ * @author       Isaac Suttell <isaac@isaacsuttell.com>
  * @file         Open a dropdown menu upon clicking an icon
  ******************************************************************************/
 
@@ -17,6 +17,10 @@ import css from './dropdown-menu.css';
 
 export default class DropdownMenu extends React.Component {
 
+  /**
+   * Initialize
+   * @param  {Object} props
+   */
   constructor(props) {
     super(props);
 
@@ -82,11 +86,34 @@ export default class DropdownMenu extends React.Component {
     }
   }
 
+  /**
+   * Either execute a function or do a strict comparison
+   * @param  {Element} source
+   * @return {Boolean}
+   */
+  sourceIsContainer(source) {
+    if (source === document.body) {
+     // Never go higher up the chain than the body
+     return true;
+   } else if(typeof this.props.container === 'function') {
+      // User supplied a function so use that
+      return this.props.container.call(this, source);
+    } else {
+      // Strict compare if we're not passed a function
+      return source === this.props.container;
+    }
+  }
+
+  /**
+   * Calculate the relative position to the menu's container
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
+   */
   getPositionRelativeToContainer(event) {
     var source = event.target;
     // Search up the tree for the component node
     while (source.parentNode) {
-      if (source.classList.contains('kards-app') || source === document.body) {
+      if (this.sourceIsContainer(source)) {
         break;
       }
       source = source.parentNode;
@@ -124,6 +151,7 @@ export default class DropdownMenu extends React.Component {
   render() {
     // Calc css styles
     var menuStyles = classNames(
+      'dropdown-menu',
       this.props.className,
       css.menu,
       {
@@ -159,7 +187,8 @@ DropdownMenu.defaultProps = {
   className: '',
   customButton: null,
   menuIconClass: 'icon-cog',
-  moreIconClass: 'icon-play_arrow'
+  moreIconClass: 'icon-play_arrow',
+  container: document.body
 };
 
 /**

@@ -1,0 +1,94 @@
+.list {
+  min-width: 200px;
+  z-index: 3000;
+  position: absolute;
+  background-color: $primary-background-color;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  top: 0;
+  margin-left: calc($base-grid-size * -1);
+
+  .label > input {
+    display: none;
+  }
+}
+.active {}
+
+.child {
+  position: relative;
+}
+
+.child .list {
+  margin-left: calc($base-grid-size * 9);
+}
+
+
+.menu {
+  position: relative;
+  display: inline-block;
+}
+
+.item {
+  cursor: pointer;
+  font-size: 13px;
+  position: relative;
+  display: flex;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  color: #000;
+  min-height: 42px;
+  line-height: 18px;
+  &:hover {
+    background-color: $primary-color;
+    color: $inverse-font-color;
+  }
+
+
+  &.divider {
+    height: 1px;
+    min-height: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+    padding: 0;
+    &:hover {
+      background: inherit;
+    }
+  }
+}
+
+.name {
+  flex-grow: 2;
+  padding: calc($base-grid-size * 3) calc($base-grid-size * 6) calc($base-grid-size * 3) $base-grid-size;
+  &.label {
+    padding-left: calc($base-grid-size * 4);
+  }
+}
+
+.icon {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.checkbox {
+  margin: 0 calc($base-grid-size * 2) 0 0;
+}
+
+.control {
+  padding: calc($base-grid-size * 2);
+  cursor: pointer;
+  font-size: 20px;
+  position: relative;
+  &:after {
+    transition: all 0.3s ease;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    z-index: -1
+  }
+}

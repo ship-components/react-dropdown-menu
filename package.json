@@ -2,7 +2,7 @@
   "name": "react-dropdown-menu",
   "version": "0.1.0",
   "description": "Material Design React Buttons",
-  "main": "src/DropdownMenu.js",
+  "main": "src/DropdownMenu.jsx",
   "scripts": {
     "start": "grunt server",
     "build": "grunt build",

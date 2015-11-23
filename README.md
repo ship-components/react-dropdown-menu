@@ -97,10 +97,10 @@ Below are is a sample of how to setup the loaders:
 }
 ```
 
+## Todo
+* Add an option to create menu using children
+
 ## Tests
-
-*There's currently a bug in Jest, so the units tests and they will not run.*
-
 1. `npm install`
 2. `npm test`
 

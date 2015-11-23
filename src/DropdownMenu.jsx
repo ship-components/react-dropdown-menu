@@ -169,6 +169,7 @@ export default class DropdownMenu extends React.Component {
             onContextMenu={this.toggleMenu} />
           <MenuList
             {...this.props}
+            isContainer={this.sourceIsContainer.bind(this)}
             items={DropdownMenu.menu(this.props.items)}
             active={this.state.active}
             onClick={this.handleClick} />

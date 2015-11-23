@@ -31,7 +31,12 @@ export default class MenuList extends React.Component {
         y: 0
       }
     }
-    this.updateOffset = this.updateOffset.bind(this);
+
+    // Keep track of any throttled functions
+    this.throttleIds = {};
+
+    // Bind and throttle this since it may be called often
+    this.updateOffset = this.throttleFn(this.updateOffset, 15, this);
   }
 
   /**
@@ -40,7 +45,6 @@ export default class MenuList extends React.Component {
    */
   componentDidMount() {
     this.updateOffset();
-    window.addEventListener('resize', this.updateOffset);
   }
 
   /**
@@ -62,10 +66,50 @@ export default class MenuList extends React.Component {
   }
 
   /**
+   * Force an update if the active state changes
+   * @param  {Object} prevProps
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps.active !== this.props.active) {
+      this.updateOffset();
+    }
+  }
+
+  /**
    * Cleaup
    */
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateOffset);
+    // Clean up any straggling functions
+    for(var key in this.throttleIds) {
+      if(this.throttleIds.hasOwnProperty(key)) {
+        clearTimeout(this.throttleIds[key]);
+      }
+    }
+  }
+
+  /**
+   * Create a function that can only be called every `threshold`
+   * @param  {Function} fn
+   * @param  {Number}   threshold    default to 200, or a response ajax request time
+   * @param  {Mixed}    ctx          default to this instance
+   * @return {Function}
+   */
+  throttleFn(fn, threshold = 200, ctx = this) {
+    let last;
+    return function(){
+      let now = Date.now();
+      let args = arguments;
+      if (last && now < last + threshold) {
+        clearTimeout(this.throttleIds[fn.name]);
+        this.throttleIds[fn.name] = setTimeout(function(){
+          last = now;
+          fn.apply(ctx, args);
+        }, threshold)
+      } else {
+        last = now;
+        fn.apply(ctx, args);
+      }
+    }.bind(this);
   }
 
   /**
@@ -138,7 +182,15 @@ export default class MenuList extends React.Component {
     }
 
     // Get relative positions to edge of container
-    let position = this.getPositionRelativeToContainer(el);
+    let container = this.getPositionRelativeToContainer(el);
+    // Get the relative position to the edge the screen
+    let screen = this.getPositionRelativeToScreen(el);
+
+    // Grab the smallest of the two
+    let position = {
+      bottom: Math.min(container.bottom, screen.bottom),
+      right: Math.min(container.right, screen.right)
+    };
 
     // Make sure to create a new instance
     let offset = {
@@ -157,16 +209,44 @@ export default class MenuList extends React.Component {
       if (parentList) {
         offset.x -= this.getParentOffset(parentList) + (this.props.scrollbar.width * 2);
       }
+
+      // Ensure the menu is always connected
+      if (screen.right < 0) {
+        offset.x -= screen.right;
+      }
     }
 
     // Height
     if (el.clientHeight > position.bottom) {
       offset.y = position.bottom - this.getOuterHeight() - this.props.scrollbar.height - this.props.overlap;
+
+      // Ensure the menu is always connected to it's parent node
+      if (screen.bottom < 0) {
+        offset.y -= screen.bottom;
+      }
     }
 
     this.setState({
       offset: offset
     });
+  }
+
+  /**
+   * Either execute a function or do a strict comparison
+   * @param  {Element} source
+   * @return {Boolean}
+   */
+  sourceIsContainer(source) {
+    if (source === document.body) {
+     // Never go higher up the chain than the body
+     return true;
+   } else if(typeof this.props.container === 'function') {
+      // User supplied a function so use that
+      return this.props.container.call(this, source);
+    } else {
+      // Strict compare if we're not passed a function
+      return source === this.props.container;
+    }
   }
 
   /**
@@ -179,12 +259,14 @@ export default class MenuList extends React.Component {
 
     let position = {
       x: 0,
-      y: 0
+      y: 0,
+      bottom: 0,
+      right: 0
     }
 
     // Search up the tree for the component node
     while (source.offsetParent) {
-      if (source === document.body) {
+      if (this.props.isContainer(source)) {
         // Stop at the container
         break;
       }
@@ -208,6 +290,47 @@ export default class MenuList extends React.Component {
       position.bottom = source.offsetHeight - position.y;
     }
 
+
+    return position;
+  }
+
+  /**
+   * Get the relative position of the element to the window
+   * @param  {Node} el
+    [description]
+   */
+  getPositionRelativeToScreen(el) {
+    var source = el.offsetParent;
+
+    let position = {
+      x: 0,
+      y: 0,
+      bottom: 0,
+      right: 0
+    }
+
+    // // Search up the tree for the component node
+    while (source.offsetParent) {
+      if (source === document.body) {
+        // Stop at the container
+        break;
+      }
+
+      // Add it all up
+      position.x += source.offsetLeft;
+      position.y += source.offsetTop;
+
+
+      source = source.offsetParent;
+    }
+
+    // Adjust according to scroll of document body
+    position.y -= document.body.scrollTop;
+    position.x -= document.body.scrollLeft;
+
+    // Helper calcs
+    position.bottom = window.innerHeight - position.y;
+    position.right = window.innerWidth - position.x;
 
     return position;
   }
@@ -299,7 +422,6 @@ export default class MenuList extends React.Component {
       </ul>
     );
   }
-
 }
 
 /**

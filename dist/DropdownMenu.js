@@ -59,7 +59,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/** ****************************************************************************
 	 * DropdownMenu
 	 *
-	 * @author       Isaac Suttell <isaac_suttell@playstation.sony.com>
+	 * @author       Isaac Suttell <isaac@isaacsuttell.com>
 	 * @file         Open a dropdown menu upon clicking an icon
 	 ******************************************************************************/
 	
@@ -112,17 +112,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DropdownMenu = (function (_React$Component) {
 	  _inherits(DropdownMenu, _React$Component);
 	
+	  /**
+	   * Initialize
+	   * @param  {Object} props
+	   */
+	
 	  function DropdownMenu(props) {
 	    _classCallCheck(this, DropdownMenu);
 	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DropdownMenu).call(this, props));
 	
 	    _this.state = {
-	      active: false,
-	      lastClick: {
-	        x: 0,
-	        y: 0
-	      }
+	      active: props.readOnly ? props.initialActive : false
 	    };
 	
 	    _this.handleClick = _this.handleClick.bind(_this);
@@ -131,14 +132,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _this;
 	  }
 	
-	  /**
-	   * Only update if active or items change
-	   * @param     {Object}    nextProps    Incoming props
-	   * @param     {Object}    nextState    Incoming state
-	   * @return    {Boolean}
-	   */
-	
 	  _createClass(DropdownMenu, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (this.props.readOnly) {
+	        this.setState({
+	          active: nextProps.initialActive
+	        });
+	      }
+	    }
+	
+	    /**
+	     * Only update if active or items change
+	     * @param     {Object}    nextProps    Incoming props
+	     * @param     {Object}    nextState    Incoming state
+	     * @return    {Boolean}
+	     */
+	
+	  }, {
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate(nextProps, nextState) {
 	      if (this.state.active !== nextState.active) {
@@ -169,9 +180,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'handleClose',
 	    value: function handleClose() {
-	      this.setState({
-	        active: false
-	      });
+	      if (!this.props.readOnly) {
+	        this.setState({
+	          active: false
+	        });
+	      }
+	      if (this.props.onClose) {
+	        this.props.onClose();
+	      }
 	    }
 	
 	    /**
@@ -183,18 +199,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(action, event) {
-	      this.handleClose(event, action);
 	      if (action) {
 	        action(event);
 	      }
+	      this.handleClose(event, action);
 	    }
+	
+	    /**
+	     * Either execute a function or do a strict comparison
+	     * @param  {Element} source
+	     * @return {Boolean}
+	     */
+	
+	  }, {
+	    key: 'sourceIsContainer',
+	    value: function sourceIsContainer(source) {
+	      if (source === document.body) {
+	        // Never go higher up the chain than the body
+	        return true;
+	      } else if (typeof this.props.container === 'function') {
+	        // User supplied a function so use that
+	        return this.props.container.call(this, source);
+	      } else {
+	        // Strict compare if we're not passed a function
+	        return source === this.props.container;
+	      }
+	    }
+	
+	    /**
+	     * Calculate the relative position to the menu's container
+	     * @param  {[type]} event [description]
+	     * @return {[type]}       [description]
+	     */
+	
 	  }, {
 	    key: 'getPositionRelativeToContainer',
 	    value: function getPositionRelativeToContainer(event) {
 	      var source = event.target;
 	      // Search up the tree for the component node
 	      while (source.parentNode) {
-	        if (source.classList.contains('kards-app') || source === document.body) {
+	        if (this.sourceIsContainer(source)) {
 	          break;
 	        }
 	        source = source.parentNode;
@@ -219,11 +263,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'toggleMenu',
 	    value: function toggleMenu(event) {
 	      event.preventDefault();
-	      var lastClick = this.getPositionRelativeToContainer(event);
+	      event.stopPropagation();
+	
+	      if (this.props.readOnly) {
+	        return;
+	      }
 	
 	      this.setState({
-	        active: !this.state.active,
-	        lastClick: lastClick
+	        active: !this.state.active
 	      });
 	    }
 	
@@ -237,17 +284,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'render',
 	    value: function render() {
 	      // Calc css styles
-	      var menuStyles = (0, _classnames2.default)(this.props.className, _dropdownMenu2.default.menu, _defineProperty({}, _dropdownMenu2.default.active, this.state.active));
+	      var menuStyles = (0, _classnames2.default)('dropdown-menu', this.props.className, _dropdownMenu2.default.menu, _defineProperty({}, _dropdownMenu2.default.active, this.state.active));
 	
 	      return _react2.default.createElement(
 	        _reactOutsideclick2.default,
 	        {
 	          onClick: this.handleClose,
+	          onContextMenu: this.handleClose,
 	          className: menuStyles },
-	        _react2.default.createElement(_MenuButton2.default, _extends({}, this.props, {
+	        this.props.showMenuButton ? _react2.default.createElement(_MenuButton2.default, _extends({}, this.props, {
 	          onClick: this.toggleMenu,
-	          onContextMenu: this.toggleMenu })),
+	          onContextMenu: this.toggleMenu })) : null,
 	        _react2.default.createElement(_MenuList2.default, _extends({}, this.props, {
+	          isContainer: this.sourceIsContainer.bind(this),
 	          items: DropdownMenu.menu(this.props.items),
 	          active: this.state.active,
 	          onClick: this.handleClick }))
@@ -266,10 +315,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = DropdownMenu;
 	DropdownMenu.defaultProps = {
+	  readOnly: false,
 	  className: '',
+	  showMenuButton: true,
 	  customButton: null,
 	  menuIconClass: 'icon-cog',
-	  moreIconClass: 'icon-play_arrow'
+	  moreIconClass: 'icon-play_arrow',
+	  container: document.body
 	};
 	
 	/**
@@ -700,9 +752,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function MenuList(props) {
 	    _classCallCheck(this, MenuList);
 	
-	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(MenuList).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(MenuList).call(this, props));
 	
-	    _this2.state = {
+	    _this3.state = {
 	      mouseOver: -1,
 	      visible: props.items.map(function () {
 	        return false;
@@ -712,8 +764,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y: 0
 	      }
 	    };
-	    _this2.updateOffset = _this2.updateOffset.bind(_this2);
-	    return _this2;
+	
+	    // Keep track of any throttled functions
+	    _this3.throttleIds = {};
+	
+	    // Bind and throttle this since it may be called often
+	    _this3.updateOffset = _this3.throttleFn(_this3.updateOffset, 15, _this3);
+	    return _this3;
 	  }
 	
 	  /**
@@ -725,7 +782,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.updateOffset();
-	      window.addEventListener('resize', this.updateOffset);
 	    }
 	
 	    /**
@@ -750,13 +806,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    /**
+	     * Force an update if the active state changes
+	     * @param  {Object} prevProps
+	     */
+	
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps) {
+	      if (prevProps.active !== this.props.active) {
+	        this.updateOffset();
+	      }
+	    }
+	
+	    /**
 	     * Cleaup
 	     */
 	
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      window.removeEventListener('resize', this.updateOffset);
+	      // Clean up any straggling functions
+	      for (var key in this.throttleIds) {
+	        if (this.throttleIds.hasOwnProperty(key)) {
+	          clearTimeout(this.throttleIds[key]);
+	        }
+	      }
+	    }
+	
+	    /**
+	     * Create a function that can only be called every `threshold`
+	     * @param  {Function} fn
+	     * @param  {Number}   threshold    default to 200, or a response ajax request time
+	     * @param  {Mixed}    ctx          default to this instance
+	     * @return {Function}
+	     */
+	
+	  }, {
+	    key: 'throttleFn',
+	    value: function throttleFn(fn) {
+	      var threshold = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
+	      var ctx = arguments.length <= 2 || arguments[2] === undefined ? this : arguments[2];
+	
+	      var last = undefined;
+	      return (function () {
+	        var now = Date.now();
+	        var args = arguments;
+	        if (last && now < last + threshold) {
+	          clearTimeout(this.throttleIds[fn.name]);
+	          this.throttleIds[fn.name] = setTimeout(function () {
+	            last = now;
+	            fn.apply(ctx, args);
+	          }, threshold);
+	        } else {
+	          last = now;
+	          fn.apply(ctx, args);
+	        }
+	      }).bind(this);
 	    }
 	
 	    /**
@@ -770,7 +875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      el = el || _reactDom2.default.findDOMNode(this);
 	      return this.calculateOuter(el, [],
 	      // ['margin-left', 'margin-right', 'padding-left', 'padding-right', 'border-left-width', 'border-right-width'],
-	      el.offsetWidth);
+	      el.clientWidth);
 	    }
 	
 	    /**
@@ -784,7 +889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      el = el || _reactDom2.default.findDOMNode(this);
 	      return this.calculateOuter(el, [],
 	      // ['margin-top', 'margin-top', 'padding-top', 'padding-top', 'border-top-width', 'border-bottom-width'],
-	      el.offsetHeight);
+	      el.clientHeight);
 	    }
 	
 	    /**
@@ -820,10 +925,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getParentOffset',
 	    value: function getParentOffset(el) {
-	      var parentWidth = this.getOuterWidth(el);
-	      var parentPosition = this.getPositionRelativeToContainer(el);
-	      var parentOffset = Math.max(0, parentPosition.right - parentWidth);
-	      return parentWidth + parentOffset;
+	      var width = this.getOuterWidth(el);
+	
+	      // Get relative positions to edge of container
+	      var container = this.getPositionRelativeToContainer(el);
+	
+	      var offset = Math.max(0, container.right - width);
+	      return width + offset;
 	    }
 	
 	    /**
@@ -833,6 +941,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'updateOffset',
 	    value: function updateOffset() {
+	      var _this = this;
+	
 	      var el = _reactDom2.default.findDOMNode(this);
 	
 	      // Not mounted yet
@@ -841,30 +951,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	
 	      // Get relative positions to edge of container
-	      var position = this.getPositionRelativeToContainer(el);
+	      var container = this.getOffsetFor(el, function (source) {
+	        return source && !_this.props.isContainer(source);
+	      });
+	      // Get the relative position to the edge the screen
+	      var screen = this.getOffsetToScreen(el);
+	
+	      // Grab the smallest of the two
+	      var position = {
+	        bottom: Math.min(container.bottom, screen.bottom),
+	        right: Math.min(container.right, screen.right)
+	      };
 	
 	      // Make sure to create a new instance
 	      var offset = {
-	        x: this.state.offset.x,
-	        y: this.state.offset.y
+	        x: 0,
+	        y: 0
 	      };
 	
-	      // Check to see if we can find a parent
 	      var parentList = _reactDom2.default.findDOMNode(this.props.parent);
 	
 	      // Width
-	      if (el.clientWidth > position.right) {
-	        offset.x = position.right - this.getOuterWidth() - this.props.scrollbar.width - this.props.overlap;
+	      if (el.offsetWidth > position.right) {
+	        offset.x -= el.offsetWidth - this.props.overlap * 2;
 	
 	        // Open the menu to the left of the parent if we have no room
 	        if (parentList) {
-	          offset.x -= this.getParentOffset(parentList) + this.props.scrollbar.width * 2;
+	          offset.x -= parentList.offsetWidth;
+	        }
+	
+	        // Ensure the menu is always connected
+	        if (screen.right < 0) {
+	          offset.x -= screen.right;
 	        }
 	      }
 	
 	      // Height
 	      if (el.clientHeight > position.bottom) {
-	        offset.y = position.bottom - this.getOuterHeight() - this.props.scrollbar.height - this.props.overlap;
+	        offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
+	
+	        // Ensure the menu is always connected to it's parent node
+	        if (screen.bottom < 0) {
+	          offset.y -= screen.bottom;
+	        }
 	      }
 	
 	      this.setState({
@@ -873,45 +1002,94 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    /**
-	     * Calculate and add up the distances to each edge of the container
-	     * @param  {Node} el
-	     * @return {Object}
+	     * Either execute a function or do a strict comparison
+	     * @param  {Element} source
+	     * @return {Boolean}
 	     */
 	
 	  }, {
-	    key: 'getPositionRelativeToContainer',
-	    value: function getPositionRelativeToContainer(el) {
-	      var source = el.offsetParent;
+	    key: 'sourceIsContainer',
+	    value: function sourceIsContainer(source) {
+	      if (source === document.body) {
+	        // Never go higher up the chain than the body
+	        return true;
+	      } else if (typeof this.props.container === 'function') {
+	        // User supplied a function so use that
+	        return this.props.container.call(this, source);
+	      } else {
+	        // Strict compare if we're not passed a function
+	        return source === this.props.container;
+	      }
+	    }
+	
+	    /**
+	     * Loop up the offset tree while containerFn is truthy. Add upp all the offsets
+	     * @param {Node}     el
+	     * @param {Function} containerFn
+	     */
+	
+	  }, {
+	    key: 'getOffsetFor',
+	    value: function getOffsetFor(el, containerFn) {
+	      var source = el;
 	
 	      var position = {
 	        x: 0,
-	        y: 0
+	        y: 0,
+	        bottom: 0,
+	        right: 0
 	      };
 	
 	      // Search up the tree for the component node
-	      while (source.offsetParent) {
-	        if (source === document.body) {
-	          // Stop at the container
-	          break;
-	        }
-	
+	      while (containerFn(source)) {
 	        // Add it all up
-	        position.x += source.offsetLeft - source.scrollLeft;
-	        position.y += source.offsetTop - source.scrollTop;
+	        position.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
+	        position.y += source.offsetTop - source.scrollTop + source.clientTop;
 	
 	        source = source.offsetParent;
 	      }
 	
-	      position.x -= source.scrollLeft;
-	      position.y -= source.scrollTop;
+	      // Helpper values
+	      position.right = source.clientWidth - position.x;
+	      position.bottom = source.clientHeight - position.y;
 	
-	      if (source === document.body) {
-	        position.right = window.innerWidth - position.x;
-	        position.bottom = window.innerHeight - position.y;
-	      } else {
-	        position.right = source.offsetWidth - position.x;
-	        position.bottom = source.offsetHeight - position.y;
+	      return position;
+	    }
+	
+	    /**
+	     * Get the relative position of the element to the window
+	     * @param  {Node} el
+	      [description]
+	     */
+	
+	  }, {
+	    key: 'getOffsetToScreen',
+	    value: function getOffsetToScreen(el) {
+	      var source = el;
+	
+	      var position = {
+	        x: 0,
+	        y: 0,
+	        bottom: 0,
+	        right: 0
+	      };
+	
+	      // // Search up the tree for the component node
+	      while (source && source !== document.body) {
+	        // Add it all up
+	        position.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
+	        position.y += source.offsetTop - source.scrollTop + source.clientTop;
+	
+	        source = source.offsetParent;
 	      }
+	
+	      // Adjust according to scroll of document body
+	      position.y -= document.body.scrollTop;
+	      position.x -= document.body.scrollLeft;
+	
+	      // Helper calcs
+	      position.bottom = window.innerHeight - position.y;
+	      position.right = window.innerWidth - position.x;
 	
 	      return position;
 	    }
@@ -985,7 +1163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this = this;
+	      var _this2 = this;
 	
 	      if (!this.props.active) {
 	        return null;
@@ -996,6 +1174,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        top: this.state.offset.y
 	      };
 	
+	      // Used to position for context menus
+	      if (this.props.parentOffset && !this.props.parent) {
+	        styles.left += this.props.parentOffset.left || 0;
+	        styles.top += this.props.parentOffset.top || 0;
+	      }
+	
 	      return _react2.default.createElement(
 	        'ul',
 	        { style: styles,
@@ -1003,10 +1187,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.getItems().map(function (menuItem, index) {
 	          return _react2.default.createElement(_MenuItem2.default, _extends({
 	            key: menuItem.key || menuItem.name
-	          }, _this.props, menuItem, {
-	            menu: _this.getMenu(menuItem),
-	            isMouseOver: _this.state.visible[index],
-	            onMouseOver: _this.handleMouseOverItem.bind(_this, index)
+	          }, _this2.props, menuItem, {
+	            menu: _this2.getMenu(menuItem),
+	            isMouseOver: _this2.state.visible[index],
+	            onMouseOver: _this2.handleMouseOverItem.bind(_this2, index)
 	          }));
 	        })
 	      );

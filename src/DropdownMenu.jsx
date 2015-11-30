@@ -136,6 +136,7 @@ export default class DropdownMenu extends React.Component {
   toggleMenu(event) {
     event.preventDefault();
     let lastClick = this.getPositionRelativeToContainer(event);
+    event.stopPropagation();
 
     this.setState({
       active: !this.state.active,

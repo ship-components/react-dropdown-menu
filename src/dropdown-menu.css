@@ -19,7 +19,7 @@
 }
 
 .child .list {
-  margin-left: calc($base-grid-size * 9);
+  margin-left:  42px;
 }
 
 

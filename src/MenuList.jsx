@@ -122,7 +122,7 @@ export default class MenuList extends React.Component {
       el,
       [],
       // ['margin-left', 'margin-right', 'padding-left', 'padding-right', 'border-left-width', 'border-right-width'],
-      el.offsetWidth
+      el.clientWidth
     );
   }
 
@@ -136,7 +136,7 @@ export default class MenuList extends React.Component {
       el,
       [],
       // ['margin-top', 'margin-top', 'padding-top', 'padding-top', 'border-top-width', 'border-bottom-width'],
-      el.offsetHeight
+      el.clientHeight
     );
   }
 
@@ -164,10 +164,13 @@ export default class MenuList extends React.Component {
    * @return  {Number}
    */
   getParentOffset(el) {
-    let parentWidth = this.getOuterWidth(el);
-    let parentPosition = this.getPositionRelativeToContainer(el);
-    let parentOffset = Math.max(0, parentPosition.right - parentWidth);
-    return parentWidth + parentOffset;
+    let width = this.getOuterWidth(el);
+
+    // Get relative positions to edge of container
+    let container = this.getPositionRelativeToContainer(el);
+
+    let offset = Math.max(0, container.right - width);
+    return width + offset;
   }
 
   /**
@@ -182,9 +185,9 @@ export default class MenuList extends React.Component {
     }
 
     // Get relative positions to edge of container
-    let container = this.getPositionRelativeToContainer(el);
+    let container = this.getOffsetFor(el, (source) => source && !this.props.isContainer(source));
     // Get the relative position to the edge the screen
-    let screen = this.getPositionRelativeToScreen(el);
+    let screen = this.getOffsetToScreen(el);
 
     // Grab the smallest of the two
     let position = {
@@ -194,20 +197,19 @@ export default class MenuList extends React.Component {
 
     // Make sure to create a new instance
     let offset = {
-      x: this.state.offset.x,
-      y: this.state.offset.y
+      x: 0,
+      y: 0
     }
 
-    // Check to see if we can find a parent
     let parentList = ReactDOM.findDOMNode(this.props.parent);
 
     // Width
-    if (el.clientWidth > position.right) {
-      offset.x = position.right - this.getOuterWidth() - this.props.scrollbar.width - this.props.overlap;
+    if (el.offsetWidth > position.right) {
+      offset.x -= el.offsetWidth - this.props.overlap * 2;
 
       // Open the menu to the left of the parent if we have no room
       if (parentList) {
-        offset.x -= this.getParentOffset(parentList) + (this.props.scrollbar.width * 2);
+        offset.x -= parentList.offsetWidth;
       }
 
       // Ensure the menu is always connected
@@ -218,7 +220,7 @@ export default class MenuList extends React.Component {
 
     // Height
     if (el.clientHeight > position.bottom) {
-      offset.y = position.bottom - this.getOuterHeight() - this.props.scrollbar.height - this.props.overlap;
+      offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
 
       // Ensure the menu is always connected to it's parent node
       if (screen.bottom < 0) {
@@ -250,12 +252,12 @@ export default class MenuList extends React.Component {
   }
 
   /**
-   * Calculate and add up the distances to each edge of the container
-   * @param  {Node} el
-   * @return {Object}
+   * Loop up the offset tree while containerFn is truthy. Add upp all the offsets
+   * @param {Node}     el
+   * @param {Function} containerFn
    */
-  getPositionRelativeToContainer(el) {
-    var source = el.offsetParent;
+  getOffsetFor(el, containerFn) {
+    var source = el;
 
     let position = {
       x: 0,
@@ -265,31 +267,17 @@ export default class MenuList extends React.Component {
     }
 
     // Search up the tree for the component node
-    while (source.offsetParent) {
-      if (this.props.isContainer(source)) {
-        // Stop at the container
-        break;
-      }
-
+    while (containerFn(source)) {
       // Add it all up
-      position.x += source.offsetLeft - source.scrollLeft;
-      position.y += source.offsetTop - source.scrollTop;
-
+      position.x += (source.offsetLeft - source.scrollLeft + source.clientLeft);
+      position.y += (source.offsetTop - source.scrollTop + source.clientTop);
 
       source = source.offsetParent;
     }
 
-    position.x -= source.scrollLeft;
-    position.y -= source.scrollTop;
-
-    if (source === document.body) {
-      position.right = window.innerWidth - position.x;
-      position.bottom = window.innerHeight - position.y;
-    } else {
-      position.right = source.offsetWidth - position.x;
-      position.bottom = source.offsetHeight - position.y;
-    }
-
+    // Helpper values
+    position.right = source.clientWidth - position.x;
+    position.bottom = source.clientHeight - position.y;
 
     return position;
   }
@@ -299,27 +287,21 @@ export default class MenuList extends React.Component {
    * @param  {Node} el
     [description]
    */
-  getPositionRelativeToScreen(el) {
-    var source = el.offsetParent;
+  getOffsetToScreen(el) {
+    var source = el;
 
     let position = {
       x: 0,
       y: 0,
       bottom: 0,
       right: 0
-    }
+    };
 
     // // Search up the tree for the component node
-    while (source.offsetParent) {
-      if (source === document.body) {
-        // Stop at the container
-        break;
-      }
-
+    while (source && source !== document.body) {
       // Add it all up
-      position.x += source.offsetLeft;
-      position.y += source.offsetTop;
-
+      position.x += (source.offsetLeft - source.scrollLeft + source.clientLeft);
+      position.y += (source.offsetTop - source.scrollTop + source.clientTop);
 
       source = source.offsetParent;
     }
@@ -403,6 +385,12 @@ export default class MenuList extends React.Component {
       left: this.state.offset.x,
       top: this.state.offset.y
     };
+
+    // Used to position for context menus
+    if (this.props.parentOffset && !this.props.parent) {
+      styles.left += this.props.parentOffset.left || 0;
+      styles.top += this.props.parentOffset.top || 0;
+    }
 
     return (
       <ul style={styles}

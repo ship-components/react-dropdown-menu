@@ -25,16 +25,20 @@ export default class DropdownMenu extends React.Component {
     super(props);
 
     this.state = {
-      active: false,
-      lastClick: {
-        x: 0,
-        y: 0
-      }
+      active: props.readOnly ? props.initialActive : false
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleClose = this.handleClose.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.readOnly) {
+      this.setState({
+        active: nextProps.initialActive
+      });
+    }
   }
 
   /**
@@ -69,9 +73,14 @@ export default class DropdownMenu extends React.Component {
    * Close the entire menu
    */
   handleClose() {
-    this.setState({
-      active: false
-    });
+    if(!this.props.readOnly) {
+      this.setState({
+        active: false
+      });
+    }
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
   }
 
   /**
@@ -80,10 +89,10 @@ export default class DropdownMenu extends React.Component {
    * @param     {MouseEvent}    event
    */
   handleClick(action, event) {
-    this.handleClose(event, action);
     if (action) {
       action(event);
     }
+    this.handleClose(event, action);
   }
 
   /**
@@ -135,12 +144,14 @@ export default class DropdownMenu extends React.Component {
    */
   toggleMenu(event) {
     event.preventDefault();
-    let lastClick = this.getPositionRelativeToContainer(event);
     event.stopPropagation();
 
+    if (this.props.readOnly) {
+      return;
+    }
+
     this.setState({
-      active: !this.state.active,
-      lastClick: lastClick
+      active: !this.state.active
     });
   }
 
@@ -163,11 +174,14 @@ export default class DropdownMenu extends React.Component {
     return (
       <OutsideClick
         onClick={this.handleClose}
+        onContextMenu={this.handleClose}
         className={menuStyles}>
-          <MenuButton
-            {...this.props}
-            onClick={this.toggleMenu}
-            onContextMenu={this.toggleMenu} />
+          {this.props.showMenuButton ?
+            <MenuButton
+              {...this.props}
+              onClick={this.toggleMenu}
+              onContextMenu={this.toggleMenu} />
+          : null}
           <MenuList
             {...this.props}
             isContainer={this.sourceIsContainer.bind(this)}
@@ -186,7 +200,9 @@ export default class DropdownMenu extends React.Component {
  * @type    {Object}
  */
 DropdownMenu.defaultProps = {
+  readOnly: false,
   className: '',
+  showMenuButton: true,
   customButton: null,
   menuIconClass: 'icon-cog',
   moreIconClass: 'icon-play_arrow',

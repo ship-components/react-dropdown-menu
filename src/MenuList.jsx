@@ -250,7 +250,11 @@ export default class MenuList extends React.Component {
     }
 
     // Search up the tree for the component node
-    while (containerFn(source)) {
+    while (checkIsContainer(source)) {
+      if (!source) {
+        break;
+      }
+
       // Add it all up
       position.x += (source.offsetLeft - source.scrollLeft + source.clientLeft);
       position.y += (source.offsetTop - source.scrollTop + source.clientTop);

@@ -234,24 +234,6 @@ export default class MenuList extends React.Component {
   }
 
   /**
-   * Either execute a function or do a strict comparison
-   * @param  {Element} source
-   * @return {Boolean}
-   */
-  sourceIsContainer(source) {
-    if (source === document.body) {
-     // Never go higher up the chain than the body
-     return true;
-   } else if(typeof this.props.container === 'function') {
-      // User supplied a function so use that
-      return this.props.container.call(this, source);
-    } else {
-      // Strict compare if we're not passed a function
-      return source === this.props.container;
-    }
-  }
-
-  /**
    * Loop up the offset tree while containerFn is truthy. Add upp all the offsets
    * @param {Node}     el
    * @param {Function} containerFn

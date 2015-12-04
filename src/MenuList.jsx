@@ -238,8 +238,9 @@ export default class MenuList extends React.Component {
    * @param {Node}     el
    * @param {Function} containerFn
    */
-  getOffsetFor(el, containerFn) {
-    var source = el;
+  getOffsetFor(el, checkIsContainer) {
+    // Don't count the element itself
+    let source = el.offsetParent;
 
     let position = {
       x: 0,

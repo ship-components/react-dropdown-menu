@@ -275,7 +275,7 @@ export default class MenuList extends React.Component {
     [description]
    */
   getOffsetToScreen(el) {
-    var source = el;
+    var source = el.offsetParent;
 
     let position = {
       x: 0,
@@ -294,8 +294,8 @@ export default class MenuList extends React.Component {
     }
 
     // Adjust according to scroll of document body
-    position.y -= document.body.scrollTop;
-    position.x -= document.body.scrollLeft;
+    position.y -= document.documentElement.scrollTop || document.body.scrollTop;
+    position.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
 
     // Helper calcs
     position.bottom = window.innerHeight - position.y;

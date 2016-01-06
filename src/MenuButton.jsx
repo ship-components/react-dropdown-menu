@@ -25,9 +25,13 @@ export default class MenuButton extends React.Component {
       });
     }
 
-    props.className = classNames(props.className, 'dropdown-menu--control', css.control)
-
-    this.__component = this.props.customButton ? this.props.customButton.component : 'span';
+    if (this.props.customButton) {
+      this.__component =  this.props.customButton.component;
+      props.className = classNames(props.className, 'dropdown-menu--control')
+    } else {
+      props.className = classNames(props.className, 'dropdown-menu--control', css.control)
+      this.__component = 'span';
+    }
 
     return (
       <HighlightClick>

@@ -6,6 +6,7 @@
  ******************************************************************************/
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import OutsideClick from 'react-outsideclick';
 
@@ -155,14 +156,8 @@ export default class DropdownMenu extends React.Component {
     });
   }
 
-  /**
-   * Render it in gold
-   *
-   * @return    {React}
-   */
-  render() {
-    // Calc css styles
-    var menuStyles = classNames(
+  getMenuClasses(){
+    return classNames(
       'dropdown-menu',
       this.props.className,
       css.menu,
@@ -170,12 +165,21 @@ export default class DropdownMenu extends React.Component {
         [css.active]  : this.state.active
       }
     );
+  }
 
+  /**
+   * Render it in gold
+   *
+   * @return    {React}
+   */
+  render() {
     return (
       <OutsideClick
+        ref='container'
         onClick={this.handleClose}
         onContextMenu={this.handleClose}
-        className={menuStyles}>
+        className={this.getMenuClasses()}
+      >
           {this.props.showMenuButton ?
             <MenuButton
               {...this.props}

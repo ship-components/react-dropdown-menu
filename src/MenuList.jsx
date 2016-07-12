@@ -262,9 +262,14 @@ export default class MenuList extends React.Component {
       source = source.offsetParent;
     }
 
-    // Helpper values
-    position.right = source.clientWidth - position.x;
-    position.bottom = source.clientHeight - position.y;
+    // Helper values
+    if (source) {
+      position.right = source.clientWidth - position.x;
+      position.bottom = source.clientHeight - position.y;
+    } else {
+      position.right = window.innerWidth - position.x;
+      position.bottom = window.innerHeight - position.y;
+    }
 
     return position;
   }

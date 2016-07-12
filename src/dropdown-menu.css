@@ -76,7 +76,7 @@
 }
 
 .control {
-  padding: calc($base-grid-size * 2);
+  padding: 0;
   cursor: pointer;
   font-size: 20px;
   position: relative;

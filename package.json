@@ -1,5 +1,5 @@
 {
-  "name": "react-dropdown-menu",
+  "name": "ship-components-dropdown-menu",
   "version": "0.1.0",
   "description": "Material Design React Buttons",
   "main": "src/DropdownMenu.jsx",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ship-components/react-dropdown-menu.git"
+    "url": "git+https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu.git"
   },
   "keywords": [
     "react"
@@ -18,15 +18,15 @@
   "author": "Isaac Suttell <isaac@isaacsuttell.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ship-components/react-dropdown-menu/issues"
+    "url": "https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu/issues"
   },
-  "homepage": "https://github.com/ship-components/react-dropdown-menu#readme",
+  "homepage": "https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu#readme",
   "devDependencies": {
     "autoprefixer": "^6.1.0",
     "babel": "^6.0.15",
     "babel-core": "^6.1.4",
     "babel-eslint": "^4.1.5",
-    "babel-jest": "git+https://github.com/isuttell/babel-jest.git#master",
+    "babel-jest": "^14.1.0",
     "babel-loader": "^6.1.0",
     "babel-preset-es2015": "^6.1.4",
     "babel-preset-react": "^6.1.4",
@@ -54,8 +54,8 @@
     "react-addons-css-transition-group": "^0.14.2",
     "react-addons-test-utils": "^0.14.2",
     "react-dom": "^0.14.2",
-    "react-highlight-click": "git+https://github.com/ship-components/react-highlight-click.git#master",
-    "react-outsideclick": "git+https://github.com/ship-components/react-outsideclick.git#master",
+    "ship-components-highlight-click": "^0.1.5",
+    "ship-components-outsideclick": "^0.1.1",
     "strict-loader": "^0.1.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.4",
@@ -85,7 +85,8 @@
   "babelJest": {
     "include": [
       "src/**/*.@(js|jsx|es6)",
-      "node_modules/react-highlight-click/src/**/*.@(js|jsx|es6)"
+      "node_modules/ship-components-highlight-click/src/**/*.@(js|jsx|es6)",
+      "node_modules/ship-components-outsideclick/src/**/*.@(js|jsx|es6)"
     ]
   }
 }

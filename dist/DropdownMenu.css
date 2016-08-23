@@ -84,7 +84,7 @@
 }
 
 .dropdown-menu--control {
-  padding: 8px;
+  padding: 0;
   cursor: pointer;
   font-size: 20px;
   position: relative;

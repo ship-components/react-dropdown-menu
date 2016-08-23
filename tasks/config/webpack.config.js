@@ -19,8 +19,8 @@ module.exports = {
     'classnames': true,
     'react': 'React',
     'react-dom': true,
-    'react-highlight-click': true,
-    'react-outsideclick': true,
+    'ship-components-highlight-click': true,
+    'ship-components-outsideclick': true,
     'react-addons-css-transition-group': true
   },
 
@@ -38,11 +38,11 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      // Ensure 'use strict' is everywhere
+      // ES6/JSX for ship-components
       {
         test: /\.(jsx?|es6)$/,
-        exclude: /node_modules/,
-        loader: 'strict'
+        include: /ship-components-.*\/src/,
+        loader: 'babel'
       },
       // CSS Modules
       {

@@ -6,9 +6,8 @@
  ******************************************************************************/
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import OutsideClick from 'react-outsideclick';
+import OutsideClick from 'ship-components-outsideclick';
 
 import { hashCode } from './utilities';
 import MenuList from './MenuList';

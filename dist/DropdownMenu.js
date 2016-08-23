@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("React"), require("classnames"), require("react-dom"), require("react-highlight-click"), require("react-outsideclick"));
+		module.exports = factory(require("React"), require("classnames"), require("react-dom"), require("ship-components-highlight-click"), require("ship-components-outsideclick"));
 	else if(typeof define === 'function' && define.amd)
-		define(["React", "classnames", "react-dom", "react-highlight-click", "react-outsideclick"], factory);
+		define(["React", "classnames", "react-dom", "ship-components-highlight-click", "ship-components-outsideclick"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("React"), require("classnames"), require("react-dom"), require("react-highlight-click"), require("react-outsideclick")) : factory(root["React"], root["classnames"], root["react-dom"], root["react-highlight-click"], root["react-outsideclick"]);
+		var a = typeof exports === 'object' ? factory(require("React"), require("classnames"), require("react-dom"), require("ship-components-highlight-click"), require("ship-components-outsideclick")) : factory(root["React"], root["classnames"], root["react-dom"], root["ship-components-highlight-click"], root["ship-components-outsideclick"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -54,16 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict'
-	
-	/** ****************************************************************************
-	 * DropdownMenu
-	 *
-	 * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	 * @file         Open a dropdown menu upon clicking an icon
-	 ******************************************************************************/
-	
-	;
+	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -73,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -81,9 +72,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _reactOutsideclick = __webpack_require__(11);
+	var _shipComponentsOutsideclick = __webpack_require__(10);
 	
-	var _reactOutsideclick2 = _interopRequireDefault(_reactOutsideclick);
+	var _shipComponentsOutsideclick2 = _interopRequireDefault(_shipComponentsOutsideclick);
 	
 	var _utilities = __webpack_require__(7);
 	
@@ -95,7 +86,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _MenuButton2 = _interopRequireDefault(_MenuButton);
 	
-	var _dropdownMenu = __webpack_require__(1);
+	var _dropdownMenu = __webpack_require__(2);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -107,7 +98,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /** ****************************************************************************
+	                                                                                                                                                                                                                   * DropdownMenu
+	                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                   ******************************************************************************/
 	
 	var DropdownMenu = (function (_React$Component) {
 	  _inherits(DropdownMenu, _React$Component);
@@ -273,6 +269,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        active: !this.state.active
 	      });
 	    }
+	  }, {
+	    key: 'getMenuClasses',
+	    value: function getMenuClasses() {
+	      return (0, _classnames2.default)('dropdown-menu', this.props.className, _dropdownMenu2.default.menu, _defineProperty({}, _dropdownMenu2.default.active, this.state.active));
+	    }
 	
 	    /**
 	     * Render it in gold
@@ -283,15 +284,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      // Calc css styles
-	      var menuStyles = (0, _classnames2.default)('dropdown-menu', this.props.className, _dropdownMenu2.default.menu, _defineProperty({}, _dropdownMenu2.default.active, this.state.active));
-	
 	      return _react2.default.createElement(
-	        _reactOutsideclick2.default,
+	        _shipComponentsOutsideclick2.default,
 	        {
+	          ref: 'container',
 	          onClick: this.handleClose,
 	          onContextMenu: this.handleClose,
-	          className: menuStyles },
+	          className: this.getMenuClasses()
+	        },
 	        this.props.showMenuButton ? _react2.default.createElement(_MenuButton2.default, _extends({}, this.props, {
 	          onClick: this.toggleMenu,
 	          onContextMenu: this.toggleMenu })) : null,
@@ -369,14 +369,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
-	module.exports = {"list":"dropdown-menu--list","label":"dropdown-menu--label","active":"dropdown-menu--active","child":"dropdown-menu--child","menu":"dropdown-menu--menu","item":"dropdown-menu--item","divider":"dropdown-menu--divider","name":"dropdown-menu--name","icon":"dropdown-menu--icon","checkbox":"dropdown-menu--checkbox","control":"dropdown-menu--control"};
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+	// removed by extract-text-webpack-plugin
+	module.exports = {"list":"dropdown-menu--list","label":"dropdown-menu--label","active":"dropdown-menu--active","child":"dropdown-menu--child","menu":"dropdown-menu--menu","item":"dropdown-menu--item","divider":"dropdown-menu--divider","name":"dropdown-menu--name","icon":"dropdown-menu--icon","checkbox":"dropdown-menu--checkbox","control":"dropdown-menu--control"};
 
 /***/ },
 /* 3 */
@@ -388,26 +388,22 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict'
-	
-	/** ****************************************************************************
-	 * MenuButton
-	 *
-	 * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	 * @file         Open a dropdown menu upon clicking an icon
-	 ******************************************************************************/
-	
-	;
+	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ****************************************************************************
+	                                                                                                                                                                                                                                                                   * MenuButton
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                                                                   ******************************************************************************/
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -415,15 +411,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _reactHighlightClick = __webpack_require__(10);
+	var _shipComponentsHighlightClick = __webpack_require__(9);
 	
-	var _reactHighlightClick2 = _interopRequireDefault(_reactHighlightClick);
+	var _shipComponentsHighlightClick2 = _interopRequireDefault(_shipComponentsHighlightClick);
 	
-	var _objectAssign = __webpack_require__(8);
-	
-	var _objectAssign2 = _interopRequireDefault(_objectAssign);
-	
-	var _dropdownMenu = __webpack_require__(1);
+	var _dropdownMenu = __webpack_require__(2);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -450,19 +442,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var props = {};
 	      if (this.props.customButton) {
-	        (0, _objectAssign2.default)(props, this.props.customButton.props);
+	        Object.assign(props, this.props.customButton.props);
 	      } else {
-	        (0, _objectAssign2.default)(props, {
+	        Object.assign(props, {
 	          className: this.props.menuIconClass
 	        });
 	      }
 	
-	      props.className = (0, _classnames2.default)(props.className, 'dropdown-menu--control', _dropdownMenu2.default.control);
-	
-	      this.__component = this.props.customButton ? this.props.customButton.component : 'span';
+	      if (this.props.customButton) {
+	        this.__component = this.props.customButton.component;
+	        props.className = (0, _classnames2.default)(props.className, 'dropdown-menu--control');
+	      } else {
+	        props.className = (0, _classnames2.default)(props.className, 'dropdown-menu--control', _dropdownMenu2.default.control);
+	        this.__component = 'span';
+	      }
 	
 	      return _react2.default.createElement(
-	        _reactHighlightClick2.default,
+	        _shipComponentsHighlightClick2.default,
 	        null,
 	        _react2.default.createElement(this.__component, _extends({}, props, {
 	          onContextMenu: this.props.onContextMenu,
@@ -480,16 +476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict'
-	
-	/** ****************************************************************************
-	 * MenuItem
-	 *
-	 * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	 * @file         Open a dropdown menu upon clicking an icon
-	 ******************************************************************************/
-	
-	;
+	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -497,7 +484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -505,7 +492,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _dropdownMenu = __webpack_require__(1);
+	var _dropdownMenu = __webpack_require__(2);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -517,7 +504,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /** ****************************************************************************
+	                                                                                                                                                                                                                   * MenuItem
+	                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                   ******************************************************************************/
 	
 	var MenuItem = (function (_React$Component) {
 	  _inherits(MenuItem, _React$Component);
@@ -694,30 +686,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict'
-	
-	/** ****************************************************************************
-	 * MenuList
-	 *
-	 * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	 * @file         Open a dropdown menu upon clicking an icon
-	 ******************************************************************************/
-	
-	;
+	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ****************************************************************************
+	                                                                                                                                                                                                                                                                   * MenuList
+	                                                                                                                                                                                                                                                                   *
+	                                                                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                                                                   ******************************************************************************/
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(9);
+	var _reactDom = __webpack_require__(8);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -729,7 +717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 	
-	var _dropdownMenu = __webpack_require__(1);
+	var _dropdownMenu = __webpack_require__(2);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -1002,27 +990,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    /**
-	     * Either execute a function or do a strict comparison
-	     * @param  {Element} source
-	     * @return {Boolean}
-	     */
-	
-	  }, {
-	    key: 'sourceIsContainer',
-	    value: function sourceIsContainer(source) {
-	      if (source === document.body) {
-	        // Never go higher up the chain than the body
-	        return true;
-	      } else if (typeof this.props.container === 'function') {
-	        // User supplied a function so use that
-	        return this.props.container.call(this, source);
-	      } else {
-	        // Strict compare if we're not passed a function
-	        return source === this.props.container;
-	      }
-	    }
-	
-	    /**
 	     * Loop up the offset tree while containerFn is truthy. Add upp all the offsets
 	     * @param {Node}     el
 	     * @param {Function} containerFn
@@ -1030,8 +997,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  }, {
 	    key: 'getOffsetFor',
-	    value: function getOffsetFor(el, containerFn) {
-	      var source = el;
+	    value: function getOffsetFor(el, checkIsContainer) {
+	      // Don't count the element itself
+	      var source = el.offsetParent;
 	
 	      var position = {
 	        x: 0,
@@ -1041,7 +1009,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	
 	      // Search up the tree for the component node
-	      while (containerFn(source)) {
+	      while (checkIsContainer(source)) {
+	        if (!source) {
+	          break;
+	        }
+	
 	        // Add it all up
 	        position.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
 	        position.y += source.offsetTop - source.scrollTop + source.clientTop;
@@ -1049,9 +1021,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        source = source.offsetParent;
 	      }
 	
-	      // Helpper values
-	      position.right = source.clientWidth - position.x;
-	      position.bottom = source.clientHeight - position.y;
+	      // Helper values
+	      if (source) {
+	        position.right = source.clientWidth - position.x;
+	        position.bottom = source.clientHeight - position.y;
+	      } else {
+	        position.right = window.innerWidth - position.x;
+	        position.bottom = window.innerHeight - position.y;
+	      }
 	
 	      return position;
 	    }
@@ -1065,7 +1042,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getOffsetToScreen',
 	    value: function getOffsetToScreen(el) {
-	      var source = el;
+	      var source = el.offsetParent;
 	
 	      var position = {
 	        x: 0,
@@ -1084,8 +1061,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	
 	      // Adjust according to scroll of document body
-	      position.y -= document.body.scrollTop;
-	      position.x -= document.body.scrollLeft;
+	      position.y -= document.documentElement.scrollTop || document.body.scrollTop;
+	      position.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
 	
 	      // Helper calcs
 	      position.bottom = window.innerHeight - position.y;
@@ -1230,20 +1207,33 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict'
+	'use strict';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.UtilityComponent = undefined;
+	exports.hashCode = hashCode;
+	
+	var _react = __webpack_require__(1);
+	
+	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	/**
 	 * Generate a hash from a string used for shorter keys
 	 * @param  {string} str [description]
 	 * @return {Number}
 	 */
-	;
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.hashCode = hashCode;
 	function hashCode(str) {
 	  var hash = 0;
 	  if (str.length === 0) {
@@ -1256,51 +1246,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  return hash;
 	}
+	
+	/**
+	 * Adds some utility functions to React.Component
+	 */
+	
+	var UtilityComponent = exports.UtilityComponent = (function (_Component) {
+	  _inherits(UtilityComponent, _Component);
+	
+	  function UtilityComponent() {
+	    _classCallCheck(this, UtilityComponent);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(UtilityComponent).apply(this, arguments));
+	  }
+	
+	  _createClass(UtilityComponent, [{
+	    key: 'throttleFn',
+	
+	    /**
+	     * Create a function that can only be called every `threshold`
+	     * @param  {Function} fn
+	     * @param  {Number}   threshold    default to 200, or a response ajax request time
+	     * @param  {Mixed}    ctx          default to this instance
+	     * @return {Function}
+	     */
+	    value: function throttleFn(fn) {
+	      var threshold = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
+	      var ctx = arguments.length <= 2 || arguments[2] === undefined ? this : arguments[2];
+	
+	      if (_typeof(this.throttleIds) !== 'object') {
+	        this.throttleIds = {};
+	      }
+	      var last = undefined;
+	      return (function () {
+	        var now = Date.now();
+	        var args = arguments;
+	        if (last && now < last + threshold) {
+	          clearTimeout(this.throttleIds[fn.name]);
+	          this.throttleIds[fn.name] = setTimeout(function () {
+	            last = now;
+	            fn.apply(ctx, args);
+	          }, threshold);
+	        } else {
+	          last = now;
+	          fn.apply(ctx, args);
+	        }
+	      }).bind(this);
+	    }
+	
+	    /**
+	     * Clean up any straggling functions
+	     */
+	
+	  }, {
+	    key: 'clearThrottleFn',
+	    value: function clearThrottleFn() {
+	      if (_typeof(this.throttleIds) !== 'object') {
+	        return;
+	      }
+	      for (var key in this.throttleIds) {
+	        if (this.throttleIds.hasOwnProperty(key)) {
+	          clearTimeout(this.throttleIds[key]);
+	        }
+	      }
+	    }
+	  }]);
+	
+	  return UtilityComponent;
+	})(_react.Component);
 
 /***/ },
 /* 8 */
 /***/ function(module, exports) {
 
-	/* eslint-disable no-unused-vars */
-	'use strict';
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-	var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-	
-	function toObject(val) {
-		if (val === null || val === undefined) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-	
-		return Object(val);
-	}
-	
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var to = toObject(target);
-		var symbols;
-	
-		for (var s = 1; s < arguments.length; s++) {
-			from = Object(arguments[s]);
-	
-			for (var key in from) {
-				if (hasOwnProperty.call(from, key)) {
-					to[key] = from[key];
-				}
-			}
-	
-			if (Object.getOwnPropertySymbols) {
-				symbols = Object.getOwnPropertySymbols(from);
-				for (var i = 0; i < symbols.length; i++) {
-					if (propIsEnumerable.call(from, symbols[i])) {
-						to[symbols[i]] = from[symbols[i]];
-					}
-				}
-			}
-		}
-	
-		return to;
-	};
-
+	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
 /***/ },
 /* 9 */
@@ -1313,12 +1332,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
 
 /***/ }
 /******/ ])

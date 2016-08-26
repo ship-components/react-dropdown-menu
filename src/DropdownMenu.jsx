@@ -101,7 +101,7 @@ export default class DropdownMenu extends React.Component {
    * @return {Boolean}
    */
   sourceIsContainer(source) {
-    if (source === document.body) {
+    if (document && source === document.body) {
      // Never go higher up the chain than the body
      return true;
    } else if(typeof this.props.container === 'function') {
@@ -208,8 +208,7 @@ DropdownMenu.defaultProps = {
   showMenuButton: true,
   customButton: null,
   menuIconClass: 'icon-cog',
-  moreIconClass: 'icon-play_arrow',
-  container: document.body
+  moreIconClass: 'icon-play_arrow'
 };
 
 /**

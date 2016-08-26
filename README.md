@@ -108,6 +108,7 @@ Below are is a sample of how to setup the loaders:
 2. `npm test`
 
 ## History
+* 0.1.1 - Fix for server side rendering
 * 0.1.0 - Initial
 
 ## License

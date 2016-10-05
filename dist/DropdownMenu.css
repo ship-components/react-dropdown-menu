@@ -79,6 +79,10 @@
   font-size: 20px;
 }
 
+.dropdown-menu--icon:before {
+  line-height: 42px;
+}
+
 .dropdown-menu--checkbox {
   margin: 0 8px 0 0;
 }

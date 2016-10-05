@@ -69,6 +69,9 @@
   line-height: 42px;
   text-align: center;
   font-size: 20px;
+  &:before {
+    line-height: 42px;
+  }
 }
 
 .checkbox {

@@ -56,13 +56,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
 	var _react = __webpack_require__(1);
 	
@@ -92,18 +92,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /** ****************************************************************************
-	                                                                                                                                                                                                                   * DropdownMenu
-	                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
-	                                                                                                                                                                                                                   ******************************************************************************/
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** ****************************************************************************
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * DropdownMenu
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
 	var DropdownMenu = (function (_React$Component) {
 	  _inherits(DropdownMenu, _React$Component);
@@ -116,7 +116,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function DropdownMenu(props) {
 	    _classCallCheck(this, DropdownMenu);
 	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DropdownMenu).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (DropdownMenu.__proto__ || Object.getPrototypeOf(DropdownMenu)).call(this, props));
 	
 	    _this.state = {
 	      active: props.readOnly ? props.initialActive : false
@@ -210,7 +210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'sourceIsContainer',
 	    value: function sourceIsContainer(source) {
-	      if (source === document.body) {
+	      if (document && source === document.body) {
 	        // Never go higher up the chain than the body
 	        return true;
 	      } else if (typeof this.props.container === 'function') {
@@ -320,8 +320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  showMenuButton: true,
 	  customButton: null,
 	  menuIconClass: 'icon-cog',
-	  moreIconClass: 'icon-play_arrow',
-	  container: document.body
+	  moreIconClass: 'icon-play_arrow'
 	};
 	
 	/**
@@ -390,18 +389,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ****************************************************************************
-	                                                                                                                                                                                                                                                                   * MenuButton
-	                                                                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	                                                                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
-	                                                                                                                                                                                                                                                                   ******************************************************************************/
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
 	var _react = __webpack_require__(1);
 	
@@ -425,7 +419,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** ****************************************************************************
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * MenuButton
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
 	var MenuButton = (function (_React$Component) {
 	  _inherits(MenuButton, _React$Component);
@@ -433,7 +432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function MenuButton() {
 	    _classCallCheck(this, MenuButton);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MenuButton).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (MenuButton.__proto__ || Object.getPrototypeOf(MenuButton)).apply(this, arguments));
 	  }
 	
 	  _createClass(MenuButton, [{
@@ -478,11 +477,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
 	var _react = __webpack_require__(1);
 	
@@ -498,18 +497,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /** ****************************************************************************
-	                                                                                                                                                                                                                   * MenuItem
-	                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
-	                                                                                                                                                                                                                   ******************************************************************************/
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** ****************************************************************************
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * MenuItem
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
 	var MenuItem = (function (_React$Component) {
 	  _inherits(MenuItem, _React$Component);
@@ -517,7 +516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function MenuItem() {
 	    _classCallCheck(this, MenuItem);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(MenuItem).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (MenuItem.__proto__ || Object.getPrototypeOf(MenuItem)).apply(this, arguments));
 	  }
 	
 	  _createClass(MenuItem, [{
@@ -688,18 +687,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /** ****************************************************************************
-	                                                                                                                                                                                                                                                                   * MenuList
-	                                                                                                                                                                                                                                                                   *
-	                                                                                                                                                                                                                                                                   * @author       Isaac Suttell <isaac@isaacsuttell.com>
-	                                                                                                                                                                                                                                                                   * @file         Open a dropdown menu upon clicking an icon
-	                                                                                                                                                                                                                                                                   ******************************************************************************/
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
 	var _react = __webpack_require__(1);
 	
@@ -727,7 +721,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** ****************************************************************************
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * MenuList
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @author       Isaac Suttell <isaac@isaacsuttell.com>
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
 	var MenuList = (function (_React$Component) {
 	  _inherits(MenuList, _React$Component);
@@ -740,9 +739,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function MenuList(props) {
 	    _classCallCheck(this, MenuList);
 	
-	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(MenuList).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (MenuList.__proto__ || Object.getPrototypeOf(MenuList)).call(this, props));
 	
-	    _this3.state = {
+	    _this.state = {
 	      mouseOver: -1,
 	      visible: props.items.map(function () {
 	        return false;
@@ -754,11 +753,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	
 	    // Keep track of any throttled functions
-	    _this3.throttleIds = {};
+	    _this.throttleIds = {};
 	
 	    // Bind and throttle this since it may be called often
-	    _this3.updateOffset = _this3.throttleFn(_this3.updateOffset, 15, _this3);
-	    return _this3;
+	    _this.updateOffset = _this.throttleFn(_this.updateOffset, 15, _this);
+	    return _this;
 	  }
 	
 	  /**
@@ -929,7 +928,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'updateOffset',
 	    value: function updateOffset() {
-	      var _this = this;
+	      var _this2 = this;
 	
 	      var el = _reactDom2.default.findDOMNode(this);
 	
@@ -940,7 +939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      // Get relative positions to edge of container
 	      var container = this.getOffsetFor(el, function (source) {
-	        return source && !_this.props.isContainer(source);
+	        return source && !_this2.props.isContainer(source);
 	      });
 	      // Get the relative position to the edge the screen
 	      var screen = this.getOffsetToScreen(el);
@@ -1140,7 +1139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      if (!this.props.active) {
 	        return null;
@@ -1164,10 +1163,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.getItems().map(function (menuItem, index) {
 	          return _react2.default.createElement(_MenuItem2.default, _extends({
 	            key: menuItem.key || menuItem.name
-	          }, _this2.props, menuItem, {
-	            menu: _this2.getMenu(menuItem),
-	            isMouseOver: _this2.state.visible[index],
-	            onMouseOver: _this2.handleMouseOverItem.bind(_this2, index)
+	          }, _this3.props, menuItem, {
+	            menu: _this3.getMenu(menuItem),
+	            isMouseOver: _this3.state.visible[index],
+	            onMouseOver: _this3.handleMouseOverItem.bind(_this3, index)
 	          }));
 	        })
 	      );
@@ -1211,12 +1210,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.UtilityComponent = undefined;
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
 	exports.hashCode = hashCode;
 	
 	var _react = __webpack_require__(1);
@@ -1257,7 +1257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function UtilityComponent() {
 	    _classCallCheck(this, UtilityComponent);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(UtilityComponent).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (UtilityComponent.__proto__ || Object.getPrototypeOf(UtilityComponent)).apply(this, arguments));
 	  }
 	
 	  _createClass(UtilityComponent, [{
@@ -1311,7 +1311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }]);
-	
+
 	  return UtilityComponent;
 	})(_react.Component);
 

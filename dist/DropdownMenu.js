@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("React"), require("classnames"), require("react-dom"), require("ship-components-highlight-click"), require("ship-components-outsideclick")) : factory(root["React"], root["classnames"], root["react-dom"], root["ship-components-highlight-click"], root["ship-components-outsideclick"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -62,9 +62,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -76,17 +76,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _shipComponentsOutsideclick2 = _interopRequireDefault(_shipComponentsOutsideclick);
 	
-	var _utilities = __webpack_require__(7);
+	var _utilities = __webpack_require__(4);
 	
-	var _MenuList = __webpack_require__(6);
+	var _MenuList = __webpack_require__(7);
 	
 	var _MenuList2 = _interopRequireDefault(_MenuList);
 	
-	var _MenuButton = __webpack_require__(4);
+	var _MenuButton = __webpack_require__(5);
 	
 	var _MenuButton2 = _interopRequireDefault(_MenuButton);
 	
-	var _dropdownMenu = __webpack_require__(2);
+	var _dropdownMenu = __webpack_require__(1);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -105,14 +105,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
-	var DropdownMenu = (function (_React$Component) {
+	var DropdownMenu = function (_React$Component) {
 	  _inherits(DropdownMenu, _React$Component);
 	
 	  /**
 	   * Initialize
 	   * @param  {Object} props
 	   */
-	
 	  function DropdownMenu(props) {
 	    _classCallCheck(this, DropdownMenu);
 	
@@ -202,56 +201,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    /**
-	     * Either execute a function or do a strict comparison
-	     * @param  {Element} source
-	     * @return {Boolean}
-	     */
-	
-	  }, {
-	    key: 'sourceIsContainer',
-	    value: function sourceIsContainer(source) {
-	      if (document && source === document.body) {
-	        // Never go higher up the chain than the body
-	        return true;
-	      } else if (typeof this.props.container === 'function') {
-	        // User supplied a function so use that
-	        return this.props.container.call(this, source);
-	      } else {
-	        // Strict compare if we're not passed a function
-	        return source === this.props.container;
-	      }
-	    }
-	
-	    /**
-	     * Calculate the relative position to the menu's container
-	     * @param  {[type]} event [description]
-	     * @return {[type]}       [description]
-	     */
-	
-	  }, {
-	    key: 'getPositionRelativeToContainer',
-	    value: function getPositionRelativeToContainer(event) {
-	      var source = event.target;
-	      // Search up the tree for the component node
-	      while (source.parentNode) {
-	        if (this.sourceIsContainer(source)) {
-	          break;
-	        }
-	        source = source.parentNode;
-	      }
-	
-	      var position = {
-	        x: event.pageX - (source.offsetLeft || 0),
-	        y: event.pageY - (source.offsetTop || 0)
-	      };
-	
-	      return {
-	        x: position.x / source.clientWidth,
-	        y: position.y / source.clientHeight
-	      };
-	    }
-	
-	    /**
 	     * Show or hide the menu
 	     */
 	
@@ -294,18 +243,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        this.props.showMenuButton ? _react2.default.createElement(_MenuButton2.default, _extends({}, this.props, {
 	          onClick: this.toggleMenu,
-	          onContextMenu: this.toggleMenu })) : null,
+	          onContextMenu: this.toggleMenu
+	        })) : null,
 	        _react2.default.createElement(_MenuList2.default, _extends({}, this.props, {
-	          isContainer: this.sourceIsContainer.bind(this),
 	          items: DropdownMenu.menu(this.props.items),
 	          active: this.state.active,
-	          onClick: this.handleClick }))
+	          onClick: this.handleClick
+	        }))
 	      );
 	    }
 	  }]);
 	
 	  return DropdownMenu;
-	})(_react2.default.Component);
+	}(_react2.default.Component);
 	
 	/**
 	 * Set some defaults
@@ -313,14 +263,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @type    {Object}
 	 */
 	
+	
 	exports.default = DropdownMenu;
 	DropdownMenu.defaultProps = {
 	  readOnly: false,
-	  className: '',
 	  showMenuButton: true,
-	  customButton: null,
 	  menuIconClass: 'icon-cog',
-	  moreIconClass: 'icon-play_arrow'
+	  moreIconClass: 'icon-play_arrow',
+	  offsetMenu: {
+	    x: 16,
+	    y: 16
+	  }
 	};
 	
 	/**
@@ -332,7 +285,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  className: _react2.default.PropTypes.string,
 	  direction: _react2.default.PropTypes.string,
 	  menuIconClass: _react2.default.PropTypes.string,
-	  items: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.object).isRequired
+	  moreIconClass: _react2.default.PropTypes.string,
+	  readOnly: _react2.default.PropTypes.bool,
+	  initialActive: _react2.default.PropTypes.bool,
+	  showMenuButton: _react2.default.PropTypes.bool,
+	  items: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.object).isRequired,
+	  offsetMenu: _react2.default.PropTypes.object
 	};
 	
 	/**
@@ -347,7 +305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return {Array<Object>}
 	 */
 	DropdownMenu.menu = function menu() {
-	  var items = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	
 	  return items.map(function (item) {
 	    if (!item.key && item.name) {
@@ -368,14 +326,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+	// removed by extract-text-webpack-plugin
+	module.exports = {"list":"dropdown-menu--list","label":"dropdown-menu--label","active":"dropdown-menu--active","child":"dropdown-menu--child","menu":"dropdown-menu--menu","item":"dropdown-menu--item","divider":"dropdown-menu--divider","name":"dropdown-menu--name","icon":"dropdown-menu--icon","checkbox":"dropdown-menu--checkbox","control":"dropdown-menu--control"};
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
-	module.exports = {"list":"dropdown-menu--list","label":"dropdown-menu--label","active":"dropdown-menu--active","child":"dropdown-menu--child","menu":"dropdown-menu--menu","item":"dropdown-menu--item","divider":"dropdown-menu--divider","name":"dropdown-menu--name","icon":"dropdown-menu--icon","checkbox":"dropdown-menu--checkbox","control":"dropdown-menu--control"};
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ },
 /* 3 */
@@ -385,6 +343,132 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.hashCode = hashCode;
+	exports.getEdgeOffset = getEdgeOffset;
+	exports.getOffset = getOffset;
+	exports.getOffsetToScreen = getOffsetToScreen;
+	/**
+	 * Generate a hash from a string used for shorter keys
+	 * @param  {string} str [description]
+	 * @return {Number}
+	 */
+	function hashCode(str) {
+	  var hash = 0;
+	  if (str.length === 0) {
+	    return hash;
+	  }
+	  for (var i = 0, len = str.length; i < len; i++) {
+	    var chr = str.charCodeAt(i);
+	    hash = (hash << 5) - hash + chr;
+	    hash |= 0; // Convert to 32bit integer
+	  }
+	  return hash;
+	}
+	
+	/**
+	 * Cal
+	 * @param    {[type]}    el            [description]
+	 * @param    {[type]}    parentList    [description]
+	 */
+	function getEdgeOffset(position, el, parentList) {
+	  var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+	
+	  var offset = {
+	    x: 0,
+	    y: 0
+	  };
+	
+	  // Get it visible if it scrolls off the top of the screen
+	  if (position.y < 0) {
+	    offset.y -= position.y;
+	  }
+	
+	  // Keep it visible if it scrolls off the left of the screen
+	  if (position.x < 0) {
+	    offset.x -= offset.x;
+	  }
+	
+	  // Width, aka we're on the right edge of the screen
+	  if (el.offsetWidth > position.right) {
+	    offset.x -= el.offsetWidth;
+	
+	    // Open the menu to the left of the parent if we have no room
+	    if (parentList) {
+	      offset.x -= parentList.offsetWidth;
+	    }
+	  }
+	
+	  // Height - aka we're at the bottom of the screen
+	  if (el.clientHeight > position.bottom) {
+	    offset.y += position.bottom - el.clientHeight - (options.scrollbar && typeof options.scrollbar.height === 'number' ? options.scrollbar.height : 0);
+	  }
+	
+	  return offset;
+	}
+	
+	/**
+	 * Get the offset to the page for a node
+	 * @param    {Node}    el
+	 */
+	function getOffset(el) {
+	  // Don't count the element itself
+	  var source = el.offsetParent;
+	
+	  var offset = {
+	    x: 0,
+	    y: 0,
+	    bottom: 0,
+	    right: 0
+	  };
+	
+	  // Search up the tree for the component node
+	  while (source && source !== document.body) {
+	    // Add it all up
+	    offset.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
+	    offset.y += source.offsetTop - source.scrollTop + source.clientTop;
+	
+	    source = source.offsetParent;
+	  }
+	
+	  // Helper values
+	  if (source) {
+	    offset.right = source.clientWidth - offset.x;
+	    offset.bottom = source.clientHeight - offset.y;
+	  } else {
+	    offset.right = window.innerWidth - offset.x;
+	    offset.bottom = window.innerHeight - offset.y;
+	  }
+	
+	  return offset;
+	}
+	
+	/**
+	 * Get the offset and then adjust relative to the screen
+	 * @param    {Node}    el
+	 */
+	function getOffsetToScreen(el) {
+	  var offset = getOffset(el);
+	
+	  // Adjust according to scroll of document body
+	  offset.y -= document.documentElement.scrollTop || document.body.scrollTop;
+	  offset.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
+	
+	  // Helper calcs
+	  offset.bottom = window.innerHeight - offset.y;
+	  offset.right = window.innerWidth - offset.x;
+	
+	  return offset;
+	}
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -395,9 +479,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -409,7 +493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _shipComponentsHighlightClick2 = _interopRequireDefault(_shipComponentsHighlightClick);
 	
-	var _dropdownMenu = __webpack_require__(2);
+	var _dropdownMenu = __webpack_require__(1);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -426,7 +510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
-	var MenuButton = (function (_React$Component) {
+	var MenuButton = function (_React$Component) {
 	  _inherits(MenuButton, _React$Component);
 	
 	  function MenuButton() {
@@ -467,12 +551,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	
 	  return MenuButton;
-	})(_react2.default.Component);
+	}(_react2.default.Component);
 	
 	exports.default = MenuButton;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -481,9 +565,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -491,7 +575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _dropdownMenu = __webpack_require__(2);
+	var _dropdownMenu = __webpack_require__(1);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
 	
@@ -510,7 +594,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
-	var MenuItem = (function (_React$Component) {
+	var MenuItem = function (_React$Component) {
 	  _inherits(MenuItem, _React$Component);
 	
 	  function MenuItem() {
@@ -521,6 +605,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  _createClass(MenuItem, [{
 	    key: 'handleClick',
+	
 	
 	    /**
 	     * Pass the action if we have it
@@ -544,8 +629,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _react2.default.createElement('li', {
 	        onMouseOver: this.props.onMouseOver,
 	        onMouseOut: this.props.onMouseOut,
-	        className: (0, _classnames2.default)('dropdown-menu--item', 'dropdown-menu--divider', _dropdownMenu2.default.divider, _dropdownMenu2.default.item),
-	        key: this.props.key });
+	        className: (0, _classnames2.default)('dropdown-menu--item', 'dropdown-menu--divider', _dropdownMenu2.default.divider, _dropdownMenu2.default.item)
+	      });
 	    }
 	
 	    /**
@@ -639,7 +724,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (this.props.hidden === true) {
+	      if (this.props.hidden === true || this.props.type === 'hidden') {
 	        return null;
 	      } else if (this.props.type === 'divider') {
 	        return this.renderDivider();
@@ -652,7 +737,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	
 	  return MenuItem;
-	})(_react2.default.Component);
+	}(_react2.default.Component);
 	
 	/**
 	 * Set some defaults
@@ -660,15 +745,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @type    {Object}
 	 */
 	
+	
 	exports.default = MenuItem;
 	MenuItem.defaultProps = {
 	  className: '',
 	  isMouseOver: false,
 	  menu: null,
 	  hidden: false,
-	  moreIconClass: 'icon-play_arrow',
-	  onMouseOut: function onMouseOut() {},
-	  onMouseOver: function onMouseOver() {}
+	  moreIconClass: 'icon-play_arrow'
 	};
 	
 	/**
@@ -682,7 +766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -691,11 +775,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _react = __webpack_require__(1);
+	var _react = __webpack_require__(2);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
@@ -707,13 +793,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _MenuItem = __webpack_require__(5);
+	var _MenuItem = __webpack_require__(6);
 	
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 	
-	var _dropdownMenu = __webpack_require__(2);
+	var _dropdownMenu = __webpack_require__(1);
 	
 	var _dropdownMenu2 = _interopRequireDefault(_dropdownMenu);
+	
+	var _utilities = __webpack_require__(4);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -728,21 +816,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @file         Open a dropdown menu upon clicking an icon
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ******************************************************************************/
 	
-	var MenuList = (function (_React$Component) {
+	var MenuList = function (_React$Component) {
 	  _inherits(MenuList, _React$Component);
 	
 	  /**
 	   * Boot it up
 	   * @param     {Object}    props
 	   */
-	
 	  function MenuList(props) {
 	    _classCallCheck(this, MenuList);
 	
 	    var _this = _possibleConstructorReturn(this, (MenuList.__proto__ || Object.getPrototypeOf(MenuList)).call(this, props));
 	
 	    _this.state = {
-	      mouseOver: -1,
+	      mouseOverIndex: -1,
 	      visible: props.items.map(function () {
 	        return false;
 	      }),
@@ -765,9 +852,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {[type]} [description]
 	   */
 	
+	
 	  _createClass(MenuList, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      window.addEventListener('resize', this.updateOffset);
+	      window.addEventListener('scroll', this.updateOffset);
 	      this.updateOffset();
 	    }
 	
@@ -783,7 +873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function shouldComponentUpdate(nextProps, nextState) {
 	      if (nextState.offset.x !== this.state.offset.x || nextState.offset.y !== this.state.offset.y) {
 	        return true;
-	      } else if (nextState.mouseOver !== this.state.mouseOver) {
+	      } else if (nextState.mouseOverIndex !== this.state.mouseOverIndex) {
 	        return true;
 	      } else if (nextProps.active !== this.props.active) {
 	        return true;
@@ -812,6 +902,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
+	      window.removeEventListener('resize', this.updateOffset);
+	      window.removeEventListener('scroll', this.updateOffset);
+	
 	      // Clean up any straggling functions
 	      for (var key in this.throttleIds) {
 	        if (this.throttleIds.hasOwnProperty(key)) {
@@ -831,11 +924,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'throttleFn',
 	    value: function throttleFn(fn) {
-	      var threshold = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
-	      var ctx = arguments.length <= 2 || arguments[2] === undefined ? this : arguments[2];
+	      var threshold = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
+	      var ctx = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this;
 	
-	      var last = undefined;
-	      return (function () {
+	      var last = void 0;
+	      return function () {
 	        var now = Date.now();
 	        var args = arguments;
 	        if (last && now < last + threshold) {
@@ -848,77 +941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          last = now;
 	          fn.apply(ctx, args);
 	        }
-	      }).bind(this);
-	    }
-	
-	    /**
-	     * Get width of this
-	     * @return {Number}
-	     */
-	
-	  }, {
-	    key: 'getOuterWidth',
-	    value: function getOuterWidth(el) {
-	      el = el || _reactDom2.default.findDOMNode(this);
-	      return this.calculateOuter(el, [],
-	      // ['margin-left', 'margin-right', 'padding-left', 'padding-right', 'border-left-width', 'border-right-width'],
-	      el.clientWidth);
-	    }
-	
-	    /**
-	     * Get height of this
-	     * @return {Number}
-	     */
-	
-	  }, {
-	    key: 'getOuterHeight',
-	    value: function getOuterHeight(el) {
-	      el = el || _reactDom2.default.findDOMNode(this);
-	      return this.calculateOuter(el, [],
-	      // ['margin-top', 'margin-top', 'padding-top', 'padding-top', 'border-top-width', 'border-bottom-width'],
-	      el.clientHeight);
-	    }
-	
-	    /**
-	     * Try to calculate the absolute width/height of an element so we can position it
-	     * @param  {Node}          el
-	     * @param  {Array<string>} styleNames
-	     * @param  {Number}        initial
-	     * @return {Number}
-	     */
-	
-	  }, {
-	    key: 'calculateOuter',
-	    value: function calculateOuter(el, styleNames) {
-	      var initial = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
-	
-	      var style = el.currentStyle || window.getComputedStyle(el);
-	      return styleNames.map(function (item) {
-	        return style[item];
-	      }).filter(function (item) {
-	        return !!item;
-	      }).reduce(function (current, item) {
-	        var val = parseInt(item, 10);
-	        return current + (isNaN(val) ? 0 : val);
-	      }, initial);
-	    }
-	
-	    /**
-	     * Calculate how far left we need to move a submenu to always be visible
-	     * @param   {Node} el
-	     * @return  {Number}
-	     */
-	
-	  }, {
-	    key: 'getParentOffset',
-	    value: function getParentOffset(el) {
-	      var width = this.getOuterWidth(el);
-	
-	      // Get relative positions to edge of container
-	      var container = this.getPositionRelativeToContainer(el);
-	
-	      var offset = Math.max(0, container.right - width);
-	      return width + offset;
+	      }.bind(this);
 	    }
 	
 	    /**
@@ -928,24 +951,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'updateOffset',
 	    value: function updateOffset() {
-	      var _this2 = this;
-	
+	      // Get the element
 	      var el = _reactDom2.default.findDOMNode(this);
-	
-	      // Not mounted yet
 	      if (!el) {
+	        // Not mounted yet
 	        return;
 	      }
 	
+	      // Grab the parent
+	      var parentList = _reactDom2.default.findDOMNode(this.props.parent);
+	
 	      // Get relative positions to edge of container
-	      var container = this.getOffsetFor(el, function (source) {
-	        return source && !_this2.props.isContainer(source);
-	      });
+	      var container = (0, _utilities.getOffset)(el);
+	
 	      // Get the relative position to the edge the screen
-	      var screen = this.getOffsetToScreen(el);
+	      var screen = (0, _utilities.getOffsetToScreen)(el);
 	
 	      // Grab the smallest of the two
 	      var position = {
+	        x: Math.min(container.x, screen.x),
+	        y: Math.min(container.y, screen.y),
 	        bottom: Math.min(container.bottom, screen.bottom),
 	        right: Math.min(container.right, screen.right)
 	      };
@@ -956,118 +981,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y: 0
 	      };
 	
-	      var parentList = _reactDom2.default.findDOMNode(this.props.parent);
-	
-	      // Width
-	      if (el.offsetWidth > position.right) {
-	        offset.x -= el.offsetWidth - this.props.overlap * 2;
-	
-	        // Open the menu to the left of the parent if we have no room
-	        if (parentList) {
-	          offset.x -= parentList.offsetWidth;
-	        }
-	
-	        // Ensure the menu is always connected
-	        if (screen.right < 0) {
-	          offset.x -= screen.right;
-	        }
+	      // Add a slide overlap to the sub menus
+	      if (parentList && el.offsetWidth > position.right) {
+	        // to the left
+	        offset.x += this.props.overlap;
+	      } else if (parentList) {
+	        // To the right
+	        offset.x -= this.props.overlap;
 	      }
 	
-	      // Height
-	      if (el.clientHeight > position.bottom) {
-	        offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
-	
-	        // Ensure the menu is always connected to it's parent node
-	        if (screen.bottom < 0) {
-	          offset.y -= screen.bottom;
-	        }
-	      }
+	      // Calculate if we need to adjust the menu to keep it visible if itself
+	      // close the the right or bottom edge of the screen
+	      var edgeOffset = (0, _utilities.getEdgeOffset)(position, el, parentList, this.props);
+	      offset.x += edgeOffset.x;
+	      offset.y += edgeOffset.y;
 	
 	      this.setState({
 	        offset: offset
 	      });
-	    }
-	
-	    /**
-	     * Loop up the offset tree while containerFn is truthy. Add upp all the offsets
-	     * @param {Node}     el
-	     * @param {Function} containerFn
-	     */
-	
-	  }, {
-	    key: 'getOffsetFor',
-	    value: function getOffsetFor(el, checkIsContainer) {
-	      // Don't count the element itself
-	      var source = el.offsetParent;
-	
-	      var position = {
-	        x: 0,
-	        y: 0,
-	        bottom: 0,
-	        right: 0
-	      };
-	
-	      // Search up the tree for the component node
-	      while (checkIsContainer(source)) {
-	        if (!source) {
-	          break;
-	        }
-	
-	        // Add it all up
-	        position.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
-	        position.y += source.offsetTop - source.scrollTop + source.clientTop;
-	
-	        source = source.offsetParent;
-	      }
-	
-	      // Helper values
-	      if (source) {
-	        position.right = source.clientWidth - position.x;
-	        position.bottom = source.clientHeight - position.y;
-	      } else {
-	        position.right = window.innerWidth - position.x;
-	        position.bottom = window.innerHeight - position.y;
-	      }
-	
-	      return position;
-	    }
-	
-	    /**
-	     * Get the relative position of the element to the window
-	     * @param  {Node} el
-	      [description]
-	     */
-	
-	  }, {
-	    key: 'getOffsetToScreen',
-	    value: function getOffsetToScreen(el) {
-	      var source = el.offsetParent;
-	
-	      var position = {
-	        x: 0,
-	        y: 0,
-	        bottom: 0,
-	        right: 0
-	      };
-	
-	      // // Search up the tree for the component node
-	      while (source && source !== document.body) {
-	        // Add it all up
-	        position.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
-	        position.y += source.offsetTop - source.scrollTop + source.clientTop;
-	
-	        source = source.offsetParent;
-	      }
-	
-	      // Adjust according to scroll of document body
-	      position.y -= document.documentElement.scrollTop || document.body.scrollTop;
-	      position.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
-	
-	      // Helper calcs
-	      position.bottom = window.innerHeight - position.y;
-	      position.right = window.innerWidth - position.x;
-	
-	      return position;
 	    }
 	
 	    /**
@@ -1095,17 +1026,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  }, {
 	    key: 'handleMouseOverItem',
-	    value: function handleMouseOverItem(index) {
+	    value: function handleMouseOverItem(mouseOverIndex) {
 	      var visible = this.state.visible.slice(0);
 	
 	      // Ensure only one is visible
 	      visible = visible.map(function (item, i) {
-	        return i === index;
+	        return i === mouseOverIndex;
 	      });
 	
-	      clearTimeout(this.menuDelay);
 	      this.setState({
-	        mouseOver: index,
+	        mouseOverIndex: mouseOverIndex,
 	        visible: visible
 	      });
 	    }
@@ -1118,11 +1048,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getItems',
 	    value: function getItems() {
-	      var _last = undefined;
+	      var _last = void 0;
 	      return (this.props.items || []).filter(function (item) {
-	        return item.hidden !== true;
-	      }).filter(function (item) {
-	        if (_last && _last.type === 'divider' && _last.type === item.type) {
+	        if (item.hidden) {
+	          return false;
+	        } else if (_last && _last.type === 'divider' && _last.type === item.type) {
 	          return false;
 	        }
 	        _last = item;
@@ -1139,7 +1069,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      if (!this.props.active) {
 	        return null;
@@ -1151,9 +1081,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	
 	      // Used to position for context menus
-	      if (this.props.parentOffset && !this.props.parent) {
-	        styles.left += this.props.parentOffset.left || 0;
-	        styles.top += this.props.parentOffset.top || 0;
+	      if (_typeof(this.props.offsetMenu) === 'object' && !this.props.parent) {
+	        styles.left += this.props.offsetMenu.left || 0;
+	        styles.top += this.props.offsetMenu.top || 0;
 	      }
 	
 	      return _react2.default.createElement(
@@ -1163,10 +1093,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.getItems().map(function (menuItem, index) {
 	          return _react2.default.createElement(_MenuItem2.default, _extends({
 	            key: menuItem.key || menuItem.name
-	          }, _this3.props, menuItem, {
-	            menu: _this3.getMenu(menuItem),
-	            isMouseOver: _this3.state.visible[index],
-	            onMouseOver: _this3.handleMouseOverItem.bind(_this3, index)
+	          }, _this2.props, menuItem, {
+	            menu: _this2.getMenu(menuItem),
+	            isMouseOver: _this2.state.visible[index],
+	            onMouseOver: _this2.handleMouseOverItem.bind(_this2, index)
 	          }));
 	        })
 	      );
@@ -1174,13 +1104,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 	
 	  return MenuList;
-	})(_react2.default.Component);
+	}(_react2.default.Component);
 	
 	/**
 	 * Set some defaults
 	 * @static
 	 * @type    {Object}
 	 */
+	
 	
 	exports.default = MenuList;
 	MenuList.defaultProps = {
@@ -1201,119 +1132,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	MenuList.propTypes = {
 	  className: _react2.default.PropTypes.string,
+	  active: _react2.default.PropTypes.bool,
+	  scrollbar: _react2.default.PropTypes.object,
+	  overlay: _react2.default.PropTypes.number,
 	  items: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.object)
 	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.UtilityComponent = undefined;
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	exports.hashCode = hashCode;
-	
-	var _react = __webpack_require__(1);
-	
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	/**
-	 * Generate a hash from a string used for shorter keys
-	 * @param  {string} str [description]
-	 * @return {Number}
-	 */
-	function hashCode(str) {
-	  var hash = 0;
-	  if (str.length === 0) {
-	    return hash;
-	  }
-	  for (var i = 0, len = str.length; i < len; i++) {
-	    var chr = str.charCodeAt(i);
-	    hash = (hash << 5) - hash + chr;
-	    hash |= 0; // Convert to 32bit integer
-	  }
-	  return hash;
-	}
-	
-	/**
-	 * Adds some utility functions to React.Component
-	 */
-	
-	var UtilityComponent = exports.UtilityComponent = (function (_Component) {
-	  _inherits(UtilityComponent, _Component);
-	
-	  function UtilityComponent() {
-	    _classCallCheck(this, UtilityComponent);
-	
-	    return _possibleConstructorReturn(this, (UtilityComponent.__proto__ || Object.getPrototypeOf(UtilityComponent)).apply(this, arguments));
-	  }
-	
-	  _createClass(UtilityComponent, [{
-	    key: 'throttleFn',
-	
-	    /**
-	     * Create a function that can only be called every `threshold`
-	     * @param  {Function} fn
-	     * @param  {Number}   threshold    default to 200, or a response ajax request time
-	     * @param  {Mixed}    ctx          default to this instance
-	     * @return {Function}
-	     */
-	    value: function throttleFn(fn) {
-	      var threshold = arguments.length <= 1 || arguments[1] === undefined ? 200 : arguments[1];
-	      var ctx = arguments.length <= 2 || arguments[2] === undefined ? this : arguments[2];
-	
-	      if (_typeof(this.throttleIds) !== 'object') {
-	        this.throttleIds = {};
-	      }
-	      var last = undefined;
-	      return (function () {
-	        var now = Date.now();
-	        var args = arguments;
-	        if (last && now < last + threshold) {
-	          clearTimeout(this.throttleIds[fn.name]);
-	          this.throttleIds[fn.name] = setTimeout(function () {
-	            last = now;
-	            fn.apply(ctx, args);
-	          }, threshold);
-	        } else {
-	          last = now;
-	          fn.apply(ctx, args);
-	        }
-	      }).bind(this);
-	    }
-	
-	    /**
-	     * Clean up any straggling functions
-	     */
-	
-	  }, {
-	    key: 'clearThrottleFn',
-	    value: function clearThrottleFn() {
-	      if (_typeof(this.throttleIds) !== 'object') {
-	        return;
-	      }
-	      for (var key in this.throttleIds) {
-	        if (this.throttleIds.hasOwnProperty(key)) {
-	          clearTimeout(this.throttleIds[key]);
-	        }
-	      }
-	    }
-	  }]);
-
-	  return UtilityComponent;
-	})(_react.Component);
 
 /***/ },
 /* 8 */

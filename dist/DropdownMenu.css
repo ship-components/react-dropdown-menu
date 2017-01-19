@@ -32,7 +32,6 @@
   font-size: 13px;
   position: relative;
   display: -webkit-box;
-  display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-transition: all 0.3s ease;
@@ -61,7 +60,6 @@
 
 .dropdown-menu--name {
   -webkit-box-flex: 2;
-  -webkit-flex-grow: 2;
       -ms-flex-positive: 2;
           flex-grow: 2;
   padding: 12px 24px 12px 4px;

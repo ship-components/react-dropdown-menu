@@ -36,13 +36,17 @@ module.exports = {
       {
         test: /\.(jsx?|es6)$/,
         exclude: /node_modules/,
-        loader: 'babel'
+        loader: 'babel',
+        babelrc: false,
+        presets: ['es2015', 'react']
       },
       // ES6/JSX for ship-components
       {
         test: /\.(jsx?|es6)$/,
         include: /ship-components-.*\/src/,
-        loader: 'babel'
+        loader: 'babel',
+        babelrc: false,
+        presets: ['es2015', 'react']
       },
       // CSS Modules
       {

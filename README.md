@@ -108,6 +108,7 @@ Below are is a sample of how to setup the loaders:
 2. `npm test`
 
 ## History
+* 0.2.1 - Added fixes for keeping the menu on the screen
 * 0.2.0 - Refactored alignment code, removed container check, updated to react 15, missing deps
 * 0.1.2 - Fix for icons not being vertically centered
 * 0.1.1 - Fix for server side rendering

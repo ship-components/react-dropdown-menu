@@ -45,7 +45,6 @@ export default class MenuList extends React.Component {
    * @return {[type]} [description]
    */
   componentDidMount() {
-    window.addEventListener('resize', this.updateOffset);
     window.addEventListener('scroll', this.updateOffset);
     this.updateOffset();
   }
@@ -82,7 +81,6 @@ export default class MenuList extends React.Component {
    * Cleaup
    */
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateOffset);
     window.removeEventListener('scroll', this.updateOffset);
 
     // Clean up any straggling functions
@@ -123,7 +121,8 @@ export default class MenuList extends React.Component {
    */
   updateOffset() {
     // Get the element
-    const el = ReactDOM.findDOMNode(this);
+    const el = ReactDOM.findDOMNode(this.refs.list);
+
     if(!el) {
       // Not mounted yet
       return;
@@ -135,22 +134,20 @@ export default class MenuList extends React.Component {
     // Get relative positions to edge of container
     const container = getOffset(el);
 
-    // Get the relative position to the edge the screen
-    const screen = getOffsetToScreen(el);
-
     // Grab the smallest of the two
-    let position = {
-      x: Math.min(container.x, screen.x),
-      y: Math.min(container.y, screen.y),
-      bottom: Math.min(container.bottom, screen.bottom),
-      right: Math.min(container.right, screen.right)
-    };
+    let position = Object.assign({}, container);
+
+    // Adjust so it fits on the screen
+    const screen = getOffsetToScreen(el);
+    Object.keys(position).forEach(key => {
+      position[key] = Math.min(position[key], screen[key]);
+    });
 
     // Make sure to create a new instance
     let offset = {
       x: 0,
       y: 0
-    }
+    };
 
     // Add a slide overlap to the sub menus
     if (parentList && el.offsetWidth > position.right) {
@@ -164,8 +161,8 @@ export default class MenuList extends React.Component {
     // Calculate if we need to adjust the menu to keep it visible if itself
     // close the the right or bottom edge of the screen
     const edgeOffset = getEdgeOffset(position, el, parentList, this.props);
-    offset.x += edgeOffset.x;
-    offset.y += edgeOffset.y;
+    offset.x += edgeOffset.left;
+    offset.y += edgeOffset.top;
 
     this.setState({
       offset
@@ -246,8 +243,11 @@ export default class MenuList extends React.Component {
     }
 
     return (
-      <ul style={styles}
-        className={classNames('dropdown-menu--list', css.list)} >
+      <ul
+        style={styles}
+        className={classNames('dropdown-menu--list', css.list)}
+        ref='list'
+      >
           {this.getItems().map((menuItem, index) => {
               return (
                 <MenuItem

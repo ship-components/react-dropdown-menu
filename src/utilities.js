@@ -23,38 +23,77 @@ export function hashCode(str) {
  */
 export function getEdgeOffset(position, el, parentList, options = {}) {
   let offset = {
-    x: 0,
-    y: 0
+    left: 0,
+    top: 0
   };
 
   // Get it visible if it scrolls off the top of the screen
-  if (position.y < 0) {
-    offset.y -= position.y;
+  if (position.top < 0) {
+    offset.top -= position.top;
   }
 
   // Keep it visible if it scrolls off the left of the screen
-  if (position.x < 0) {
-    offset.x -= offset.x;
+  if (position.left < 0) {
+    offset.left -= offset.left;
   }
 
   // Width, aka we're on the right edge of the screen
   if (el.offsetWidth > position.right) {
-    offset.x -= el.offsetWidth;
+    offset.left -= el.offsetWidth;
 
     // Open the menu to the left of the parent if we have no room
     if (parentList) {
-      offset.x -= parentList.offsetWidth;
+      offset.left -= parentList.offsetWidth;
+    } else {
+      // Move the other other side of the button
+      offset.left += el.offsetParent.clientWidth;
     }
   }
 
   // Height - aka we're at the bottom of the screen
   if (el.clientHeight > position.bottom) {
-    offset.y += position.bottom - el.clientHeight - (options.scrollbar && typeof options.scrollbar.height === 'number' ? options.scrollbar.height : 0);
+    offset.top += position.bottom - el.clientHeight - (options.scrollbar && typeof options.scrollbar.height === 'number' ? options.scrollbar.height : 0);
   }
 
   return offset;
 }
 
+/**
+ * Get the size of the document
+ * @return    {Object}
+ */
+export function getDocumentSize() {
+  const {body, documentElement} = document;
+  return {
+    width: Math.max(body.offsetWidth, body.scrollWidth, documentElement.clientWidth, documentElement.offsetWidth, documentElement.scrollWidth),
+    height: Math.max(body.offsetHeight, body.scrollHeight, documentElement.clientHeight, documentElement.offsetHeight, documentElement.scrollHeight)
+  };
+}
+
+
+/**
+ * Get total scroll from node
+ * @param    {Node}    el
+ */
+export function getScroll(el) {
+  let scroll = {
+    top: 0,
+    left: 0
+  }
+
+  // Don't count the element itself
+  let source = el.offsetParent;
+
+  // Search up the tree for the component node
+  while (source) {
+    // Add it all up
+    scroll.top += source.scrollTop;
+    scroll.left += source.scrollLeft;
+    source = source.offsetParent
+  }
+
+  return scroll;
+}
 /**
  * Get the offset to the page for a node
  * @param    {Node}    el
@@ -64,29 +103,25 @@ export function getOffset(el) {
   let source = el.offsetParent;
 
   let offset = {
-    x: 0,
-    y: 0,
+    left: 0,
+    top: 0,
     bottom: 0,
     right: 0
   }
 
   // Search up the tree for the component node
-  while (source && source !== document.body) {
+  while (source) {
     // Add it all up
-    offset.x += (source.offsetLeft - source.scrollLeft + source.clientLeft);
-    offset.y += (source.offsetTop - source.scrollTop + source.clientTop);
-
+    offset.left += (source.offsetLeft - source.clientLeft);
+    offset.top += (source.offsetTop - source.clientTop);
     source = source.offsetParent;
   }
 
+  const documentSize = getDocumentSize();
+
   // Helper values
-  if (source) {
-    offset.right = source.clientWidth - offset.x;
-    offset.bottom = source.clientHeight - offset.y;
-  } else {
-    offset.right = window.innerWidth - offset.x;
-    offset.bottom = window.innerHeight - offset.y;
-  }
+  offset.right = documentSize.width - offset.left;
+  offset.bottom = documentSize.height - offset.top;
 
   return offset;
 }
@@ -98,13 +133,16 @@ export function getOffset(el) {
 export function getOffsetToScreen(el) {
   let offset = getOffset(el);
 
-  // Adjust according to scroll of document body
-  offset.y -= document.documentElement.scrollTop || document.body.scrollTop;
-  offset.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
+  // Go up the dom tree and add up all the scrolling
+  const scroll = getScroll(el);
+
+  // Apply scroll
+  offset.left -= scroll.left;
+  offset.top -= scroll.top;
 
   // Helper calcs
-  offset.bottom = window.innerHeight - offset.y;
-  offset.right = window.innerWidth - offset.x;
+  offset.bottom = window.innerHeight - offset.top;
+  offset.right = window.innerWidth - offset.left;
 
   return offset;
 }

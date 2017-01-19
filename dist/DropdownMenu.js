@@ -352,6 +352,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.hashCode = hashCode;
 	exports.getEdgeOffset = getEdgeOffset;
+	exports.getDocumentSize = getDocumentSize;
+	exports.getScroll = getScroll;
 	exports.getOffset = getOffset;
 	exports.getOffsetToScreen = getOffsetToScreen;
 	/**
@@ -381,38 +383,79 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 	
 	  var offset = {
-	    x: 0,
-	    y: 0
+	    left: 0,
+	    top: 0
 	  };
 	
 	  // Get it visible if it scrolls off the top of the screen
-	  if (position.y < 0) {
-	    offset.y -= position.y;
+	  if (position.top < 0) {
+	    offset.top -= position.top;
 	  }
 	
 	  // Keep it visible if it scrolls off the left of the screen
-	  if (position.x < 0) {
-	    offset.x -= offset.x;
+	  if (position.left < 0) {
+	    offset.left -= offset.left;
 	  }
 	
 	  // Width, aka we're on the right edge of the screen
 	  if (el.offsetWidth > position.right) {
-	    offset.x -= el.offsetWidth;
+	    offset.left -= el.offsetWidth;
 	
 	    // Open the menu to the left of the parent if we have no room
 	    if (parentList) {
-	      offset.x -= parentList.offsetWidth;
+	      offset.left -= parentList.offsetWidth;
+	    } else {
+	      // Move the other other side of the button
+	      offset.left += el.offsetParent.clientWidth;
 	    }
 	  }
 	
 	  // Height - aka we're at the bottom of the screen
 	  if (el.clientHeight > position.bottom) {
-	    offset.y += position.bottom - el.clientHeight - (options.scrollbar && typeof options.scrollbar.height === 'number' ? options.scrollbar.height : 0);
+	    offset.top += position.bottom - el.clientHeight - (options.scrollbar && typeof options.scrollbar.height === 'number' ? options.scrollbar.height : 0);
 	  }
 	
 	  return offset;
 	}
 	
+	/**
+	 * Get the size of the document
+	 * @return    {Object}
+	 */
+	function getDocumentSize() {
+	  var _document = document,
+	      body = _document.body,
+	      documentElement = _document.documentElement;
+	
+	  return {
+	    width: Math.max(body.offsetWidth, body.scrollWidth, documentElement.clientWidth, documentElement.offsetWidth, documentElement.scrollWidth),
+	    height: Math.max(body.offsetHeight, body.scrollHeight, documentElement.clientHeight, documentElement.offsetHeight, documentElement.scrollHeight)
+	  };
+	}
+	
+	/**
+	 * Get total scroll from node
+	 * @param    {Node}    el
+	 */
+	function getScroll(el) {
+	  var scroll = {
+	    top: 0,
+	    left: 0
+	  };
+	
+	  // Don't count the element itself
+	  var source = el.offsetParent;
+	
+	  // Search up the tree for the component node
+	  while (source) {
+	    // Add it all up
+	    scroll.top += source.scrollTop;
+	    scroll.left += source.scrollLeft;
+	    source = source.offsetParent;
+	  }
+	
+	  return scroll;
+	}
 	/**
 	 * Get the offset to the page for a node
 	 * @param    {Node}    el
@@ -422,29 +465,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var source = el.offsetParent;
 	
 	  var offset = {
-	    x: 0,
-	    y: 0,
+	    left: 0,
+	    top: 0,
 	    bottom: 0,
 	    right: 0
 	  };
 	
 	  // Search up the tree for the component node
-	  while (source && source !== document.body) {
+	  while (source) {
 	    // Add it all up
-	    offset.x += source.offsetLeft - source.scrollLeft + source.clientLeft;
-	    offset.y += source.offsetTop - source.scrollTop + source.clientTop;
-	
+	    offset.left += source.offsetLeft - source.clientLeft;
+	    offset.top += source.offsetTop - source.clientTop;
 	    source = source.offsetParent;
 	  }
 	
+	  var documentSize = getDocumentSize();
+	
 	  // Helper values
-	  if (source) {
-	    offset.right = source.clientWidth - offset.x;
-	    offset.bottom = source.clientHeight - offset.y;
-	  } else {
-	    offset.right = window.innerWidth - offset.x;
-	    offset.bottom = window.innerHeight - offset.y;
-	  }
+	  offset.right = documentSize.width - offset.left;
+	  offset.bottom = documentSize.height - offset.top;
 	
 	  return offset;
 	}
@@ -456,13 +495,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function getOffsetToScreen(el) {
 	  var offset = getOffset(el);
 	
-	  // Adjust according to scroll of document body
-	  offset.y -= document.documentElement.scrollTop || document.body.scrollTop;
-	  offset.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
+	  // Go up the dom tree and add up all the scrolling
+	  var scroll = getScroll(el);
+	
+	  // Apply scroll
+	  offset.left -= scroll.left;
+	  offset.top -= scroll.top;
 	
 	  // Helper calcs
-	  offset.bottom = window.innerHeight - offset.y;
-	  offset.right = window.innerWidth - offset.x;
+	  offset.bottom = window.innerHeight - offset.top;
+	  offset.right = window.innerWidth - offset.left;
 	
 	  return offset;
 	}
@@ -856,7 +898,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _createClass(MenuList, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      window.addEventListener('resize', this.updateOffset);
 	      window.addEventListener('scroll', this.updateOffset);
 	      this.updateOffset();
 	    }
@@ -902,7 +943,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      window.removeEventListener('resize', this.updateOffset);
 	      window.removeEventListener('scroll', this.updateOffset);
 	
 	      // Clean up any straggling functions
@@ -952,7 +992,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'updateOffset',
 	    value: function updateOffset() {
 	      // Get the element
-	      var el = _reactDom2.default.findDOMNode(this);
+	      var el = _reactDom2.default.findDOMNode(this.refs.list);
+	
 	      if (!el) {
 	        // Not mounted yet
 	        return;
@@ -964,16 +1005,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Get relative positions to edge of container
 	      var container = (0, _utilities.getOffset)(el);
 	
-	      // Get the relative position to the edge the screen
-	      var screen = (0, _utilities.getOffsetToScreen)(el);
-	
 	      // Grab the smallest of the two
-	      var position = {
-	        x: Math.min(container.x, screen.x),
-	        y: Math.min(container.y, screen.y),
-	        bottom: Math.min(container.bottom, screen.bottom),
-	        right: Math.min(container.right, screen.right)
-	      };
+	      var position = Object.assign({}, container);
+	
+	      // Adjust so it fits on the screen
+	      var screen = (0, _utilities.getOffsetToScreen)(el);
+	      Object.keys(position).forEach(function (key) {
+	        position[key] = Math.min(position[key], screen[key]);
+	      });
 	
 	      // Make sure to create a new instance
 	      var offset = {
@@ -993,8 +1032,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Calculate if we need to adjust the menu to keep it visible if itself
 	      // close the the right or bottom edge of the screen
 	      var edgeOffset = (0, _utilities.getEdgeOffset)(position, el, parentList, this.props);
-	      offset.x += edgeOffset.x;
-	      offset.y += edgeOffset.y;
+	      offset.x += edgeOffset.left;
+	      offset.y += edgeOffset.top;
 	
 	      this.setState({
 	        offset: offset
@@ -1088,8 +1127,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      return _react2.default.createElement(
 	        'ul',
-	        { style: styles,
-	          className: (0, _classnames2.default)('dropdown-menu--list', _dropdownMenu2.default.list) },
+	        {
+	          style: styles,
+	          className: (0, _classnames2.default)('dropdown-menu--list', _dropdownMenu2.default.list),
+	          ref: 'list'
+	        },
 	        this.getItems().map(function (menuItem, index) {
 	          return _react2.default.createElement(_MenuItem2.default, _extends({
 	            key: menuItem.key || menuItem.name

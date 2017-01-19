@@ -108,6 +108,7 @@ Below are is a sample of how to setup the loaders:
 2. `npm test`
 
 ## History
+* 0.2.0 - Refactored alignment code and removed container check
 * 0.1.2 - Fix for icons not being vertically centered
 * 0.1.1 - Fix for server side rendering
 * 0.1.0 - Initial
@@ -115,7 +116,7 @@ Below are is a sample of how to setup the loaders:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015 Isaac Suttell
+Copyright (c) SHIP
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

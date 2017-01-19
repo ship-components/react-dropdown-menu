@@ -77,7 +77,8 @@ class Examples extends React.Component {
           <h2>Basic</h2>
           <DropdownMenu
             menuIconClass='ion-navicon'
-            items={this.getBasicMenuItems()}/>
+            items={this.getBasicMenuItems()}
+          />
           <code>
 {`<DropdownMenu
       menuIconClass='ion-navicon'

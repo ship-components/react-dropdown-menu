@@ -33,7 +33,7 @@ export default class MenuItem extends React.Component {
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
         className={classNames('dropdown-menu--item', 'dropdown-menu--divider', css.divider, css.item)}
-        key={this.props.key} />
+      />
     );
   }
 
@@ -113,7 +113,7 @@ export default class MenuItem extends React.Component {
    * @return    {React}
    */
   render() {
-    if (this.props.hidden === true) {
+    if (this.props.hidden === true || this.props.type === 'hidden') {
       return null;
     } else if(this.props.type === 'divider') {
       return this.renderDivider();
@@ -136,9 +136,7 @@ MenuItem.defaultProps = {
   isMouseOver: false,
   menu: null,
   hidden: false,
-  moreIconClass: 'icon-play_arrow',
-  onMouseOut: function() {},
-  onMouseOver: function() {}
+  moreIconClass: 'icon-play_arrow'
 };
 
 /**

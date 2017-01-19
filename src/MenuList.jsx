@@ -13,6 +13,8 @@ import MenuItem from './MenuItem';
 
 import css from './dropdown-menu.css';
 
+import {getOffset, getOffsetToScreen, getEdgeOffset} from './utilities';
+
 export default class MenuList extends React.Component {
 
   /**
@@ -21,11 +23,10 @@ export default class MenuList extends React.Component {
    */
   constructor(props) {
     super(props);
+
     this.state = {
-      mouseOver: -1,
-      visible: props.items.map(() => {
-        return false;
-      }),
+      mouseOverIndex: -1,
+      visible: props.items.map(() => false),
       offset: {
         x: 0,
         y: 0
@@ -44,6 +45,8 @@ export default class MenuList extends React.Component {
    * @return {[type]} [description]
    */
   componentDidMount() {
+    window.addEventListener('resize', this.updateOffset);
+    window.addEventListener('scroll', this.updateOffset);
     this.updateOffset();
   }
 
@@ -56,7 +59,7 @@ export default class MenuList extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (nextState.offset.x !== this.state.offset.x || nextState.offset.y !== this.state.offset.y) {
       return true;
-    } else if (nextState.mouseOver !== this.state.mouseOver) {
+    } else if (nextState.mouseOverIndex !== this.state.mouseOverIndex) {
       return true;
     } else if (nextProps.active !== this.props.active) {
       return true;
@@ -79,8 +82,11 @@ export default class MenuList extends React.Component {
    * Cleaup
    */
   componentWillUnmount() {
+    window.removeEventListener('resize', this.updateOffset);
+    window.removeEventListener('scroll', this.updateOffset);
+
     // Clean up any straggling functions
-    for(var key in this.throttleIds) {
+    for (var key in this.throttleIds) {
       if(this.throttleIds.hasOwnProperty(key)) {
         clearTimeout(this.throttleIds[key]);
       }
@@ -113,84 +119,29 @@ export default class MenuList extends React.Component {
   }
 
   /**
-   * Get width of this
-   * @return {Number}
-   */
-  getOuterWidth(el) {
-    el = el || ReactDOM.findDOMNode(this);
-    return this.calculateOuter(
-      el,
-      [],
-      // ['margin-left', 'margin-right', 'padding-left', 'padding-right', 'border-left-width', 'border-right-width'],
-      el.clientWidth
-    );
-  }
-
-  /**
-   * Get height of this
-   * @return {Number}
-   */
-  getOuterHeight(el) {
-    el = el || ReactDOM.findDOMNode(this);
-    return this.calculateOuter(
-      el,
-      [],
-      // ['margin-top', 'margin-top', 'padding-top', 'padding-top', 'border-top-width', 'border-bottom-width'],
-      el.clientHeight
-    );
-  }
-
-  /**
-   * Try to calculate the absolute width/height of an element so we can position it
-   * @param  {Node}          el
-   * @param  {Array<string>} styleNames
-   * @param  {Number}        initial
-   * @return {Number}
-   */
-  calculateOuter(el, styleNames, initial = 0) {
-    var style = el.currentStyle || window.getComputedStyle(el);
-    return styleNames
-      .map((item) => style[item])
-      .filter((item) => !!item)
-      .reduce((current, item) => {
-        let val = parseInt(item, 10);
-        return current + (isNaN(val) ? 0 : val);
-      }, initial);
-  }
-
-  /**
-   * Calculate how far left we need to move a submenu to always be visible
-   * @param   {Node} el
-   * @return  {Number}
-   */
-  getParentOffset(el) {
-    let width = this.getOuterWidth(el);
-
-    // Get relative positions to edge of container
-    let container = this.getPositionRelativeToContainer(el);
-
-    let offset = Math.max(0, container.right - width);
-    return width + offset;
-  }
-
-  /**
    * Calculate and update offset if need be
    */
   updateOffset() {
-    let el = ReactDOM.findDOMNode(this);
-
-    // Not mounted yet
-    if (!el) {
+    // Get the element
+    const el = ReactDOM.findDOMNode(this);
+    if(!el) {
+      // Not mounted yet
       return;
     }
 
+    // Grab the parent
+    const parentList = ReactDOM.findDOMNode(this.props.parent);
+
     // Get relative positions to edge of container
-    let container = this.getOffsetFor(el, (source) => source && !this.props.isContainer(source));
+    const container = getOffset(el);
+
     // Get the relative position to the edge the screen
-    let screen = this.getOffsetToScreen(el);
+    const screen = getOffsetToScreen(el);
 
     // Grab the smallest of the two
     let position = {
+      x: Math.min(container.x, screen.x),
+      y: Math.min(container.y, screen.y),
       bottom: Math.min(container.bottom, screen.bottom),
       right: Math.min(container.right, screen.right)
     };
@@ -201,112 +152,24 @@ export default class MenuList extends React.Component {
       y: 0
     }
 
-    let parentList = ReactDOM.findDOMNode(this.props.parent);
-
-    // Width
-    if (el.offsetWidth > position.right) {
-      offset.x -= el.offsetWidth - this.props.overlap * 2;
-
-      // Open the menu to the left of the parent if we have no room
-      if (parentList) {
-        offset.x -= parentList.offsetWidth;
-      }
-
-      // Ensure the menu is always connected
-      if (screen.right < 0) {
-        offset.x -= screen.right;
-      }
+    // Add a slide overlap to the sub menus
+    if (parentList && el.offsetWidth > position.right) {
+      // to the left
+      offset.x += this.props.overlap;
+    } else if (parentList) {
+      // To the right
+      offset.x -= this.props.overlap;
     }
 
-    // Height
-    if (el.clientHeight > position.bottom) {
-      offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
-
-      // Ensure the menu is always connected to it's parent node
-      if (screen.bottom < 0) {
-        offset.y -= screen.bottom;
-      }
-    }
+    // Calculate if we need to adjust the menu to keep it visible if itself
+    // close the the right or bottom edge of the screen
+    const edgeOffset = getEdgeOffset(position, el, parentList, this.props);
+    offset.x += edgeOffset.x;
+    offset.y += edgeOffset.y;
 
     this.setState({
-      offset: offset
+      offset
     });
-  }
-
-  /**
-   * Loop up the offset tree while containerFn is truthy. Add upp all the offsets
-   * @param {Node}     el
-   * @param {Function} containerFn
-   */
-  getOffsetFor(el, checkIsContainer) {
-    // Don't count the element itself
-    let source = el.offsetParent;
-
-    let position = {
-      x: 0,
-      y: 0,
-      bottom: 0,
-      right: 0
-    }
-
-    // Search up the tree for the component node
-    while (checkIsContainer(source)) {
-      if (!source) {
-        break;
-      }
-
-      // Add it all up
-      position.x += (source.offsetLeft - source.scrollLeft + source.clientLeft);
-      position.y += (source.offsetTop - source.scrollTop + source.clientTop);
-
-      source = source.offsetParent;
-    }
-
-    // Helper values
-    if (source) {
-      position.right = source.clientWidth - position.x;
-      position.bottom = source.clientHeight - position.y;
-    } else {
-      position.right = window.innerWidth - position.x;
-      position.bottom = window.innerHeight - position.y;
-    }
-
-    return position;
-  }
-
-  /**
-   * Get the relative position of the element to the window
-   * @param  {Node} el
-    [description]
-   */
-  getOffsetToScreen(el) {
-    var source = el.offsetParent;
-
-    let position = {
-      x: 0,
-      y: 0,
-      bottom: 0,
-      right: 0
-    };
-
-    // // Search up the tree for the component node
-    while (source && source !== document.body) {
-      // Add it all up
-      position.x += (source.offsetLeft - source.scrollLeft + source.clientLeft);
-      position.y += (source.offsetTop - source.scrollTop + source.clientTop);
-
-      source = source.offsetParent;
-    }
-
-    // Adjust according to scroll of document body
-    position.y -= document.documentElement.scrollTop || document.body.scrollTop;
-    position.x -= document.documentElement.scrollLeft || document.body.scrollLeft;
-
-    // Helper calcs
-    position.bottom = window.innerHeight - position.y;
-    position.right = window.innerWidth - position.x;
-
-    return position;
   }
 
   /**
@@ -331,18 +194,15 @@ export default class MenuList extends React.Component {
    * Hover and show when sub menus
    * @param     {Number}    index
    */
-  handleMouseOverItem(index) {
+  handleMouseOverItem(mouseOverIndex) {
     let visible = this.state.visible.slice(0);
 
     // Ensure only one is visible
-    visible = visible.map((item, i) => {
-      return i === index;
-    });
+    visible = visible.map((item, i) => i === mouseOverIndex);
 
-    clearTimeout(this.menuDelay);
     this.setState({
-      mouseOver: index,
-      visible: visible
+      mouseOverIndex,
+      visible
     });
   }
 
@@ -353,9 +213,10 @@ export default class MenuList extends React.Component {
   getItems() {
     let _last;
     return (this.props.items || [])
-      .filter((item) => item.hidden !== true)
-      .filter((item) => {
-        if (_last && _last.type === 'divider' && _last.type === item.type) {
+      .filter(item => {
+        if (item.hidden) {
+          return false
+        } else if (_last && _last.type === 'divider' && _last.type === item.type) {
           return false;
         }
         _last = item;
@@ -379,9 +240,9 @@ export default class MenuList extends React.Component {
     };
 
     // Used to position for context menus
-    if (this.props.parentOffset && !this.props.parent) {
-      styles.left += this.props.parentOffset.left || 0;
-      styles.top += this.props.parentOffset.top || 0;
+    if (typeof this.props.offsetMenu === 'object' && !this.props.parent) {
+      styles.left += this.props.offsetMenu.left || 0;
+      styles.top += this.props.offsetMenu.top || 0;
     }
 
     return (
@@ -427,5 +288,8 @@ MenuList.defaultProps = {
  */
 MenuList.propTypes = {
   className: React.PropTypes.string,
+  active: React.PropTypes.bool,
+  scrollbar: React.PropTypes.object,
+  overlay: React.PropTypes.number,
   items: React.PropTypes.arrayOf(React.PropTypes.object)
 };

@@ -688,7 +688,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        {
 	          onMouseOver: this.props.onMouseOver,
 	          onMouseOut: this.props.onMouseOut,
-	          className: (0, _classnames2.default)('dropdown-menu--item', _dropdownMenu2.default.item, this.props.className),
+	          className: (0, _classnames2.default)('dropdown-menu--item', _dropdownMenu2.default.item),
 	          key: this.props.name,
 	          onClick: this.handleClick.bind(this, this.props.action) },
 	        _react2.default.createElement(
@@ -790,7 +790,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports.default = MenuItem;
 	MenuItem.defaultProps = {
-	  className: '',
 	  isMouseOver: false,
 	  menu: null,
 	  hidden: false,
@@ -803,7 +802,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @type    {Object}
 	 */
 	MenuItem.propTypes = {
-	  className: _react2.default.PropTypes.string,
 	  item: _react2.default.PropTypes.object
 	};
 

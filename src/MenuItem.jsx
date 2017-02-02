@@ -46,7 +46,7 @@ export default class MenuItem extends React.Component {
       <li
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
-        className={classNames('dropdown-menu--item', css.item, this.props.className)}
+        className={classNames('dropdown-menu--item', css.item)}
         key={this.props.name}
         onClick={this.handleClick.bind(this, this.props.action)}>
           <div className={classNames('dropdown-menu--icon', css.icon, this.props.iconClass)}>
@@ -132,7 +132,6 @@ export default class MenuItem extends React.Component {
  * @type    {Object}
  */
 MenuItem.defaultProps = {
-  className: '',
   isMouseOver: false,
   menu: null,
   hidden: false,
@@ -145,6 +144,5 @@ MenuItem.defaultProps = {
  * @type    {Object}
  */
 MenuItem.propTypes = {
-  className: React.PropTypes.string,
   item: React.PropTypes.object
 };

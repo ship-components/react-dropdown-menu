@@ -2,6 +2,7 @@
  * MenuList
  *
  * @author       Isaac Suttell <isaac@isaacsuttell.com>
+ * @contributor  Sepand Assadi <sepand.assadi@sony.com>
  * @file         Open a dropdown menu upon clicking an icon
  ******************************************************************************/
 
@@ -13,7 +14,7 @@ import MenuItem from './MenuItem';
 
 import css from './dropdown-menu.css';
 
-import {getOffset, getOffsetToScreen, getEdgeOffset} from './utilities';
+import {getOffset, getOffsetToScreen} from './utilities';
 
 export default class MenuList extends React.Component {
 
@@ -121,7 +122,7 @@ export default class MenuList extends React.Component {
    */
   updateOffset() {
     // Get the element
-    const el = ReactDOM.findDOMNode(this.refs.list);
+    const el = ReactDOM.findDOMNode(this);
 
     if(!el) {
       // Not mounted yet
@@ -132,16 +133,16 @@ export default class MenuList extends React.Component {
     const parentList = ReactDOM.findDOMNode(this.props.parent);
 
     // Get relative positions to edge of container
-    const container = getOffset(el);
+    const container = getOffset(el, (source) => source && !this.props.isContainer(source));
+
+    // Get the relative position to the edge the screen
+    let screen = getOffsetToScreen(el);
 
     // Grab the smallest of the two
-    let position = Object.assign({}, container);
-
-    // Adjust so it fits on the screen
-    const screen = getOffsetToScreen(el);
-    Object.keys(position).forEach(key => {
-      position[key] = Math.min(position[key], screen[key]);
-    });
+    let position = {
+      bottom: Math.min(container.bottom, screen.bottom),
+      right: Math.min(container.right, screen.right)
+    };
 
     // Make sure to create a new instance
     let offset = {
@@ -149,20 +150,30 @@ export default class MenuList extends React.Component {
       y: 0
     };
 
-    // Add a slide overlap to the sub menus
-    if (parentList && el.offsetWidth > position.right) {
-      // to the left
-      offset.x += this.props.overlap;
-    } else if (parentList) {
-      // To the right
-      offset.x -= this.props.overlap;
+    // Width
+    if (el.offsetWidth > position.right) {
+      offset.x -= el.offsetWidth - this.props.overlap * 2;
+
+      // Open the menu to the left of the parent if we have no room
+      if (parentList) {
+        offset.x -= parentList.offsetWidth;
+      }
+
+      // Ensure the menu is always connected
+      if (screen.right < 0) {
+        offset.x -= screen.right;
+      }
     }
 
-    // Calculate if we need to adjust the menu to keep it visible if itself
-    // close the the right or bottom edge of the screen
-    const edgeOffset = getEdgeOffset(position, el, parentList, this.props);
-    offset.x += edgeOffset.left;
-    offset.y += edgeOffset.top;
+    // Height
+    if (el.clientHeight > position.bottom) {
+      offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
+
+      // Ensure the menu is always connected to it's parent node
+      if (screen.bottom < 0) {
+        offset.y -= screen.bottom;
+      }
+    }
 
     this.setState({
       offset
@@ -246,7 +257,6 @@ export default class MenuList extends React.Component {
       <ul
         style={styles}
         className={classNames('dropdown-menu--list', css.list)}
-        ref='list'
       >
           {this.getItems().map((menuItem, index) => {
               return (

@@ -2,6 +2,7 @@
  * MenuButton
  *
  * @author       Isaac Suttell <isaac@isaacsuttell.com>
+ * @contributor  Sepand Assadi <sepand.assadi@sony.com>
  * @file         Open a dropdown menu upon clicking an icon
  ******************************************************************************/
 

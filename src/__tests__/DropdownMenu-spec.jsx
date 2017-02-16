@@ -9,8 +9,9 @@ jest.setMock('ship-components-highlight-click', 'div');
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
-describe('DropdownMenu', function(){
-  let itemsProps = [{
+describe('DropdownMenu', () => {
+  let itemsProps = [
+    {
       action: function() {},
       iconClass: 'icon-edit',
       key: Math.floor((Math.random() * 100) + 1),
@@ -30,40 +31,41 @@ describe('DropdownMenu', function(){
     }
   ]
   let DropdownMenu;
-
-  beforeEach(function() {
+  beforeEach(() => {
     DropdownMenu = require('../DropdownMenu').default;
   });
 
-   // Render without error
-   it('should render without error', function() {
-      let element = React.createElement(
-         DropdownMenu, // component class
-         {
-          'items': itemsProps
-         } // props go here
-      );
+  // Render without error
+  it('should render without error', () => {
+    let element = React.createElement(
+       DropdownMenu, // component class
+       {
+        'items': itemsProps
+       } // props go here
+    );
 
-      expect(() => TestUtils.renderIntoDocument(element))
-         .not.toThrow();
-   });
+    expect(() => TestUtils.renderIntoDocument(element))
+       .not.toThrow();
+  });
 
-   it('should exists', function() {
-      // Render into document
-      let dropdownMenu = TestUtils.renderIntoDocument( <DropdownMenu items={itemsProps}/> );
-      expect(TestUtils.isCompositeComponent(dropdownMenu)).toBeTruthy();
-   });
+  it('should support custom css classes', () => {
+    let className = 'testClass';
+    let reactTree = TestUtils.renderIntoDocument(
+      <DropdownMenu
+        className={className}
+        items={itemsProps}
+      />
+    );
+    let comp = TestUtils.findRenderedDOMComponentWithClass(reactTree, className);
 
-   it('should support custom css classes', function() {
-      let className = 'testClass';
-      let reactTree = TestUtils.renderIntoDocument(
-        <DropdownMenu
-          className={className}
-          items={itemsProps}
-        />
-      );
-      let comp = TestUtils.scryRenderedDOMComponentsWithClass(reactTree, className);
+    expect(comp).toBeDefined();
+  });
 
-      expect(comp).toBeDefined();
-   });
+  it('should be rendered with a MenuList as a child', () => {
+    let MenuList = require('../MenuList').default;
+    let dropdownMenu = TestUtils.renderIntoDocument(<DropdownMenu items={itemsProps} />);
+    let menuList = TestUtils.findRenderedComponentWithType(dropdownMenu, MenuList);
+
+    expect(TestUtils.isCompositeComponentWithType(menuList, MenuList)).toBe(true);
+  });
 });

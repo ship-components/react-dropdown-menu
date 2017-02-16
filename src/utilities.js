@@ -44,8 +44,8 @@ export function getOffset(el, checkIsContainer) {
   }
 
   // Helper values
-  offset.right = source.clientWidth - offset.left;
-  offset.bottom = source.clientHeight - offset.top;
+  offset.right = source && source.clientWidth - offset.left;
+  offset.bottom = source && source.clientHeight - offset.top;
 
   return offset;
 }

@@ -2,6 +2,7 @@
  * DropdownMenu
  *
  * @author       Isaac Suttell <isaac@isaacsuttell.com>
+ * @contributor  Sepand Assadi <sepand.assadi@sony.com>
  * @file         Open a dropdown menu upon clicking an icon
  ******************************************************************************/
 
@@ -96,6 +97,24 @@ export default class DropdownMenu extends React.Component {
   }
 
   /**
+   * Either execute a function or do a strict comparison
+   * @param  {Element} source
+   * @return {Boolean}
+   */
+  sourceIsContainer(source) {
+    if (source === document.body) {
+     // Never go higher up the chain than the body
+     return true;
+   } else if(typeof this.props.container === 'function') {
+      // User supplied a function so use that
+      return this.props.container.call(this, source);
+    } else {
+      // Strict compare if we're not passed a function
+      return source === this.props.container;
+    }
+  }
+
+  /**
    * Show or hide the menu
    */
   toggleMenu(event) {
@@ -144,6 +163,7 @@ export default class DropdownMenu extends React.Component {
           : null}
           <MenuList
             {...this.props}
+            isContainer={this.sourceIsContainer.bind(this)}
             items={DropdownMenu.menu(this.props.items)}
             active={this.state.active}
             onClick={this.handleClick}
@@ -164,6 +184,7 @@ DropdownMenu.defaultProps = {
   showMenuButton: true,
   menuIconClass: 'icon-cog',
   moreIconClass: 'icon-play_arrow',
+  container: document.body,
   offsetMenu: {
     x: 16,
     y: 16

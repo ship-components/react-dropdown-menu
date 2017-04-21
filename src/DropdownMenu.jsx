@@ -7,6 +7,7 @@
  ******************************************************************************/
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import OutsideClick from 'ship-components-outsideclick';
 
@@ -197,15 +198,15 @@ DropdownMenu.defaultProps = {
  * @type    {Object}
  */
 DropdownMenu.propTypes = {
-  className: React.PropTypes.string,
-  direction: React.PropTypes.string,
-  menuIconClass: React.PropTypes.string,
-  moreIconClass: React.PropTypes.string,
-  readOnly: React.PropTypes.bool,
-  initialActive: React.PropTypes.bool,
-  showMenuButton: React.PropTypes.bool,
-  items: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-  offsetMenu: React.PropTypes.object
+  className: PropTypes.string,
+  direction: PropTypes.string,
+  menuIconClass: PropTypes.string,
+  moreIconClass: PropTypes.string,
+  readOnly: PropTypes.bool,
+  initialActive: PropTypes.bool,
+  showMenuButton: PropTypes.bool,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  offsetMenu: PropTypes.object
 };
 
 /**

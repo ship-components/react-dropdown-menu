@@ -5,7 +5,7 @@ jest.setMock('react-addons-css-transition-group', 'div');
 jest.setMock('ship-components-highlight-click', 'div');
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
 
 describe('MenuButton', function(){
   let MenuButton;

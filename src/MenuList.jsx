@@ -8,6 +8,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import MenuItem from './MenuItem';
@@ -297,9 +298,9 @@ MenuList.defaultProps = {
  * @type    {Object}
  */
 MenuList.propTypes = {
-  className: React.PropTypes.string,
-  active: React.PropTypes.bool,
-  scrollbar: React.PropTypes.object,
-  overlay: React.PropTypes.number,
-  items: React.PropTypes.arrayOf(React.PropTypes.object)
+  className: PropTypes.string,
+  active: PropTypes.bool,
+  scrollbar: PropTypes.object,
+  overlay: PropTypes.number,
+  items: PropTypes.arrayOf(PropTypes.object)
 };

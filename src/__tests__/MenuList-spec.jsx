@@ -4,7 +4,8 @@ jest.unmock('../MenuList');
 jest.setMock('react-addons-css-transition-group', 'div');
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from 'react-dom/test-utils';
+
 import { shallow, mount } from 'enzyme';
 
 describe('MenuList', () => {

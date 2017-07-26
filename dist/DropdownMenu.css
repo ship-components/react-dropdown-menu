@@ -34,7 +34,6 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   white-space: nowrap;
   color: #000;
@@ -93,7 +92,6 @@
 }
 
 .dropdown-menu--control:after {
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   content: '';
   position: absolute;

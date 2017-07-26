@@ -7,6 +7,7 @@
  ******************************************************************************/
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import css from './dropdown-menu.css';
@@ -145,5 +146,5 @@ MenuItem.defaultProps = {
  * @type    {Object}
  */
 MenuItem.propTypes = {
-  item: React.PropTypes.object
+  item: PropTypes.object
 };

@@ -1,6 +1,6 @@
 {
   "name": "ship-components-dropdown-menu",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Material Design React Dropdown Menu",
   "main": "src/DropdownMenu.jsx",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu.git"
+    "url": "git+https://github.com/ship-components/ship-components-dropdown-menu.git"
   },
   "keywords": [
     "react"
@@ -20,9 +20,9 @@
   "author": "Isaac Suttell <isaac@isaacsuttell.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu/issues"
+    "url": "https://github.com/ship-components/ship-components-dropdown-menu/issues"
   },
-  "homepage": "https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu#readme",
+  "homepage": "https://github.com/ship-components/ship-components-dropdown-menu#readme",
   "contributors": [
     {
       "name": "Isaac Suttell",

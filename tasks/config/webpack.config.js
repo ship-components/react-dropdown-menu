@@ -38,7 +38,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel',
         babelrc: false,
-        presets: ['es2015', 'react']
+        presets: ['env', 'react']
       },
       // ES6/JSX for ship-components
       {
@@ -46,7 +46,7 @@ module.exports = {
         include: /ship-components-.*\/src/,
         loader: 'babel',
         babelrc: false,
-        presets: ['es2015', 'react']
+        presets: ['env', 'react']
       },
       // CSS Modules
       {

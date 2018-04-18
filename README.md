@@ -113,6 +113,7 @@ Below are is a sample of how to setup the loaders:
 2. `npm test`
 
 ## History
+* 0.5.0 - Removed ReactDOM.findDOMNode which allows compatibility with React 16
 * 0.4.0 - Updates to the latest babel configurations (babel-preset-env)
 * 0.3.0 - Updates to React 15, Implements basic tests and fixes the dropdown UI bug to prevent the component to be cutoff
 * 0.2.2 - Fixed a bug where props.classNames were applied twice

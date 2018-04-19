@@ -73,6 +73,38 @@ class Examples extends React.Component {
     return (
       <div>
         <h1>{'<DropdownMenu> Examples'}</h1>
+        <div className='example-group fixed'>
+          <h2>Inside a fixed position container (like a header)</h2>
+          <DropdownMenu
+            menuIconClass='ion-navicon'
+            items={this.getBasicMenuItems()}
+          />
+          <code>
+{`<MyHeader style={{position: 'fixed'}}>
+  <DropdownMenu
+    menuIconClass='ion-navicon'
+    items={[
+        {
+            name: 'Add Action',
+            iconClass: 'ion-plus',
+            action: function() {}
+        },
+        {
+            name: 'Remove Action',
+            iconClass: 'ion-minus',
+            action: function() {}
+        },
+        {
+            name: 'Help Action',
+            iconClass: 'ion-help-buoy',
+            action: function() {}
+        }
+    ]}/>
+</MyHeader>
+`}
+          </code>
+        </div>
+
         <div className='example-group'>
           <h2>Basic</h2>
           <DropdownMenu

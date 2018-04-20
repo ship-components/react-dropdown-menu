@@ -187,8 +187,8 @@ DropdownMenu.defaultProps = {
   moreIconClass: 'icon-play_arrow',
   container: document.body,
   offsetMenu: {
-    x: 16,
-    y: 16
+    x: 0,
+    y: 0
   }
 };
 

@@ -7,7 +7,6 @@
  ******************************************************************************/
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -123,7 +122,7 @@ export default class MenuList extends React.Component {
    */
   updateOffset() {
     // Get the element
-    const el = ReactDOM.findDOMNode(this);
+    const el = this.refs.list;
 
     if(!el) {
       // Not mounted yet
@@ -131,7 +130,7 @@ export default class MenuList extends React.Component {
     }
 
     // Grab the parent
-    const parentList = ReactDOM.findDOMNode(this.props.parent);
+    const parentList = this.props.parent;
 
     // Get relative positions to edge of container
     const container = getOffset(el, (source) => source && !this.props.isContainer(source));
@@ -193,7 +192,7 @@ export default class MenuList extends React.Component {
     return (
       <MenuList
         {...this.props}
-        parent={this}
+        parent={this.refs.list}
         items={item.menu}
       />
     );
@@ -256,6 +255,7 @@ export default class MenuList extends React.Component {
 
     return (
       <ul
+        ref='list'
         style={styles}
         className={classNames('dropdown-menu--list', css.list)}
       >
@@ -302,5 +302,6 @@ MenuList.propTypes = {
   active: PropTypes.bool,
   scrollbar: PropTypes.object,
   overlay: PropTypes.number,
-  items: PropTypes.arrayOf(PropTypes.object)
+  items: PropTypes.arrayOf(PropTypes.object),
+  parent: PropTypes.node
 };

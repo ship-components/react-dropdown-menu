@@ -1,6 +1,6 @@
 {
   "name": "ship-components-dropdown-menu",
-  "version": "0.6.0",
+  "version": "1.1.0",
   "description": "Material Design React Dropdown Menu",
   "main": "src/DropdownMenu.jsx",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu.git"
+    "url": "git+https://github.com/ship-components/ship-components-dropdown-menu.git"
   },
   "keywords": [
     "react"
@@ -20,9 +20,9 @@
   "author": "Isaac Suttell <isaac@isaacsuttell.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu/issues"
+    "url": "https://github.com/ship-components/ship-components-dropdown-menu/issues"
   },
-  "homepage": "https://github.com/ship-components/ship-components-dropdown-menu-dropdown-menu#readme",
+  "homepage": "https://github.com/ship-components/ship-components-dropdown-menu#readme",
   "contributors": [
     {
       "name": "Isaac Suttell",
@@ -43,7 +43,6 @@
     "babel-eslint": "^7.1.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.3.1",
-    "babel-plugin-transform-es2015-classes": "^6.23.0",
     "babel-preset-env": "^1.4.0",
     "babel-preset-react": "^6.23.0",
     "classnames": "^2.2.0",
@@ -96,7 +95,7 @@
     ]
   },
   "dependencies": {
-    "prop-types": "^15.6.1",
+    "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^15.6.2",

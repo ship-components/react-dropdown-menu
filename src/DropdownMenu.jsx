@@ -199,7 +199,7 @@ DropdownMenu.defaultProps = {
  */
 DropdownMenu.propTypes = {
   className: PropTypes.string,
-  container: PropTypes.oneOf([PropTypes.node, PropTypes.func]),
+  container: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   direction: PropTypes.string,
   menuIconClass: PropTypes.string,
   moreIconClass: PropTypes.string,

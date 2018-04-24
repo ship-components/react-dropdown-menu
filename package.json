@@ -1,6 +1,6 @@
 {
   "name": "ship-components-dropdown-menu",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Material Design React Dropdown Menu",
   "main": "src/DropdownMenu.jsx",
   "scripts": {
@@ -31,6 +31,10 @@
     {
       "name": "Sepand Assadi",
       "email": "sepand.assadi@sony.com"
+    },
+    {
+      "name": "Chris Orescan",
+      "email": "chris.orescan@sony.com"
     }
   ],
   "devDependencies": {

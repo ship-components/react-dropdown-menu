@@ -106,7 +106,7 @@ export default class DropdownMenu extends React.Component {
     if (source === document.body) {
      // Never go higher up the chain than the body
      return true;
-   } else if(typeof this.props.container === 'function') {
+    } else if (typeof this.props.container === 'function') {
       // User supplied a function so use that
       return this.props.container.call(this, source);
     } else {
@@ -187,8 +187,8 @@ DropdownMenu.defaultProps = {
   moreIconClass: 'icon-play_arrow',
   container: document.body,
   offsetMenu: {
-    x: 16,
-    y: 16
+    x: 0,
+    y: 0
   }
 };
 
@@ -199,6 +199,7 @@ DropdownMenu.defaultProps = {
  */
 DropdownMenu.propTypes = {
   className: PropTypes.string,
+  container: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.oneOf([document.body])]),
   direction: PropTypes.string,
   menuIconClass: PropTypes.string,
   moreIconClass: PropTypes.string,
@@ -206,7 +207,10 @@ DropdownMenu.propTypes = {
   initialActive: PropTypes.bool,
   showMenuButton: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  offsetMenu: PropTypes.object
+  offsetMenu: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired
+  })
 };
 
 /**

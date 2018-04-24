@@ -32,11 +32,7 @@ export function getOffset(el, checkIsContainer) {
   }
 
   // Search up the tree for the component node
-  while (checkIsContainer(source)) {
-    if(!source) {
-      break;
-    }
-
+  while (source && checkIsContainer(source)) {
     // Add it all up
     offset.left += (source.offsetLeft - source.scrollLeft + source.clientLeft);
     offset.top += (source.offsetTop - source.scrollTop + source.clientTop);
@@ -44,8 +40,8 @@ export function getOffset(el, checkIsContainer) {
   }
 
   // Helper values
-  offset.right = source && source.clientWidth - offset.left;
-  offset.bottom = source && source.clientHeight - offset.top;
+  offset.right = source ? source.clientWidth - offset.left : void 0;
+  offset.bottom = source ? source.clientHeight - offset.top : void 0;
 
   return offset;
 }

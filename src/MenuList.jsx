@@ -122,41 +122,66 @@ export default class MenuList extends React.Component {
    */
   updateOffset() {
     // Get the element
-    const el = this.refs.list;
+    const menu = this.refs.list;
 
-    if(!el) {
+    if(!menu) {
       // Not mounted yet
       return;
     }
 
-    // Grab the parent
-    const parentList = this.props.parent;
+    // Grab the parent menu.
+    // This will only exist if this MenuList is a submenu.
+    const parentMenu = this.props.parent;
 
-    // Get relative positions to edge of container
-    const container = getOffset(el, (source) => source && !this.props.isContainer(source));
+    // Get the relative position of the MenuLust to the edge the screen
+    let screen = getOffsetToScreen(menu);
 
-    // Get the relative position to the edge the screen
-    let screen = getOffsetToScreen(el);
+    // Get relative positions to edge of its container
+    const container = getOffset(menu, (source) => source && !this.props.isContainer(source));
+
+    // If these values are undefined, just use Infinity.
+    // Alternately we could just set them to screen.right/bottom.
+    // This effectively means "ignore these values".
+    if (isNaN(container.bottom)) {
+      container.bottom = Infinity;
+    }
+
+    if (isNaN(container.right)) {
+      container.right = Infinity;
+    }
 
     // Grab the smallest of the two
-    let position = {
+    let menuPosition = {
       bottom: Math.min(container.bottom, screen.bottom),
       right: Math.min(container.right, screen.right)
     };
 
+    this.setState({
+      offset: this.repositionForScreenEdges(menu, parentMenu, menuPosition, screen)
+    })
+  }
+
+  /**
+   * Recalculate menu position if it is offscreen.
+   * @param {MenuList} menu
+   * @param {MenuList} parentMenu
+   * @param {object} menuPosition
+   * @param {object} screen
+   */
+  repositionForScreenEdges(menu, parentMenu, menuPosition, screen) {
     // Make sure to create a new instance
     let offset = {
       x: 0,
       y: 0
     };
 
-    // Width
-    if (el.offsetWidth > position.right) {
-      offset.x -= el.offsetWidth - this.props.overlap * 2;
+    // Reposition on x-axis if dropdown is over the right edge of the screen
+    if (menu.offsetWidth > menuPosition.right) {
+      offset.x -= menu.offsetWidth - this.props.overlap * 2;
 
       // Open the menu to the left of the parent if we have no room
-      if (parentList) {
-        offset.x -= parentList.offsetWidth;
+      if (parentMenu) {
+        offset.x -= parentMenu.offsetWidth;
       }
 
       // Ensure the menu is always connected
@@ -165,9 +190,9 @@ export default class MenuList extends React.Component {
       }
     }
 
-    // Height
-    if (el.clientHeight > position.bottom) {
-      offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
+    // Reposition on y-axis if dropdown is over the bottom edge of the screen
+    if (menu.clientHeight > menuPosition.bottom) {
+      offset.y = menuPosition.bottom - menu.clientHeight - this.props.scrollbar.height - this.props.overlap;
 
       // Ensure the menu is always connected to it's parent node
       if (screen.bottom < 0) {
@@ -175,9 +200,7 @@ export default class MenuList extends React.Component {
       }
     }
 
-    this.setState({
-      offset
-    });
+    return offset;
   }
 
   /**
@@ -249,8 +272,8 @@ export default class MenuList extends React.Component {
 
     // Used to position for context menus
     if (typeof this.props.offsetMenu === 'object' && !this.props.parent) {
-      styles.left += this.props.offsetMenu.left || 0;
-      styles.top += this.props.offsetMenu.top || 0;
+      styles.left += this.props.offsetMenu.x || 0;
+      styles.top += this.props.offsetMenu.y || 0;
     }
 
     return (
@@ -301,7 +324,11 @@ MenuList.propTypes = {
   className: PropTypes.string,
   active: PropTypes.bool,
   scrollbar: PropTypes.object,
-  overlay: PropTypes.number,
+  overlap: PropTypes.number,
   items: PropTypes.arrayOf(PropTypes.object),
-  parent: PropTypes.node
+  parent: PropTypes.object,
+  offsetMenu: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired
+  })
 };

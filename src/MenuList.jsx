@@ -326,7 +326,7 @@ MenuList.propTypes = {
   scrollbar: PropTypes.object,
   overlap: PropTypes.number,
   items: PropTypes.arrayOf(PropTypes.object),
-  parent: PropTypes.node,
+  parent: PropTypes.object,
   offsetMenu: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired

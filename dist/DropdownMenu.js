@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("React"), require("classnames"), require("react-dom"), require("ship-components-highlight-click"), require("ship-components-outsideclick"));
+		module.exports = factory(require("React"), require("classnames"), require("ship-components-highlight-click"), require("ship-components-outsideclick"));
 	else if(typeof define === 'function' && define.amd)
-		define(["React", "classnames", "react-dom", "ship-components-highlight-click", "ship-components-outsideclick"], factory);
+		define(["React", "classnames", "ship-components-highlight-click", "ship-components-outsideclick"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("React"), require("classnames"), require("react-dom"), require("ship-components-highlight-click"), require("ship-components-outsideclick")) : factory(root["React"], root["classnames"], root["react-dom"], root["ship-components-highlight-click"], root["ship-components-outsideclick"]);
+		var a = typeof exports === 'object' ? factory(require("React"), require("classnames"), require("ship-components-highlight-click"), require("ship-components-outsideclick")) : factory(root["React"], root["classnames"], root["ship-components-highlight-click"], root["ship-components-outsideclick"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_19__, __WEBPACK_EXTERNAL_MODULE_20__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_18__, __WEBPACK_EXTERNAL_MODULE_19__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -94,7 +94,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _shipComponentsOutsideclick = __webpack_require__(20);
+	var _shipComponentsOutsideclick = __webpack_require__(19);
 	
 	var _shipComponentsOutsideclick2 = _interopRequireDefault(_shipComponentsOutsideclick);
 	
@@ -331,8 +331,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  moreIconClass: 'icon-play_arrow',
 	  container: document.body,
 	  offsetMenu: {
-	    x: 16,
-	    y: 16
+	    x: 0,
+	    y: 0
 	  }
 	};
 	
@@ -343,6 +343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	DropdownMenu.propTypes = {
 	  className: _propTypes2.default.string,
+	  container: _propTypes2.default.oneOfType([_propTypes2.default.node, _propTypes2.default.func, _propTypes2.default.oneOf([document.body])]),
 	  direction: _propTypes2.default.string,
 	  menuIconClass: _propTypes2.default.string,
 	  moreIconClass: _propTypes2.default.string,
@@ -350,7 +351,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  initialActive: _propTypes2.default.bool,
 	  showMenuButton: _propTypes2.default.bool,
 	  items: _propTypes2.default.arrayOf(_propTypes2.default.object).isRequired,
-	  offsetMenu: _propTypes2.default.object
+	  offsetMenu: _propTypes2.default.shape({
+	    x: _propTypes2.default.number.isRequired,
+	    y: _propTypes2.default.number.isRequired
+	  })
 	};
 	
 	/**
@@ -789,11 +793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    right: 0
 	
 	    // Search up the tree for the component node
-	  };while (checkIsContainer(source)) {
-	    if (!source) {
-	      break;
-	    }
-	
+	  };while (source && checkIsContainer(source)) {
 	    // Add it all up
 	    offset.left += source.offsetLeft - source.scrollLeft + source.clientLeft;
 	    offset.top += source.offsetTop - source.scrollTop + source.clientTop;
@@ -801,8 +801,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	
 	  // Helper values
-	  offset.right = source && source.clientWidth - offset.left;
-	  offset.bottom = source && source.clientHeight - offset.top;
+	  offset.right = source ? source.clientWidth - offset.left : void 0;
+	  offset.bottom = source ? source.clientHeight - offset.top : void 0;
 	
 	  return offset;
 	}
@@ -948,7 +948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _shipComponentsHighlightClick = __webpack_require__(19);
+	var _shipComponentsHighlightClick = __webpack_require__(18);
 	
 	var _shipComponentsHighlightClick2 = _interopRequireDefault(_shipComponentsHighlightClick);
 	
@@ -1280,10 +1280,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(18);
-	
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-	
 	var _propTypes = __webpack_require__(7);
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -1463,43 +1459,71 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this2 = this;
 	
 	      // Get the element
-	      var el = _reactDom2.default.findDOMNode(this);
+	      var menu = this.refs.list;
 	
-	      if (!el) {
+	      if (!menu) {
 	        // Not mounted yet
 	        return;
 	      }
 	
-	      // Grab the parent
-	      var parentList = _reactDom2.default.findDOMNode(this.props.parent);
+	      // Grab the parent menu.
+	      // This will only exist if this MenuList is a submenu.
+	      var parentMenu = this.props.parent;
 	
-	      // Get relative positions to edge of container
-	      var container = (0, _utilities.getOffset)(el, function (source) {
+	      // Get the relative position of the MenuLust to the edge the screen
+	      var screen = (0, _utilities.getOffsetToScreen)(menu);
+	
+	      // Get relative positions to edge of its container
+	      var container = (0, _utilities.getOffset)(menu, function (source) {
 	        return source && !_this2.props.isContainer(source);
 	      });
 	
-	      // Get the relative position to the edge the screen
-	      var screen = (0, _utilities.getOffsetToScreen)(el);
+	      // If these values are undefined, just use Infinity.
+	      // Alternately we could just set them to screen.right/bottom.
+	      // This effectively means "ignore these values".
+	      if (isNaN(container.bottom)) {
+	        container.bottom = Infinity;
+	      }
+	
+	      if (isNaN(container.right)) {
+	        container.right = Infinity;
+	      }
 	
 	      // Grab the smallest of the two
-	      var position = {
+	      var menuPosition = {
 	        bottom: Math.min(container.bottom, screen.bottom),
 	        right: Math.min(container.right, screen.right)
 	      };
 	
+	      this.setState({
+	        offset: this.repositionForScreenEdges(menu, parentMenu, menuPosition, screen)
+	      });
+	    }
+	
+	    /**
+	     * Recalculate menu position if it is offscreen.
+	     * @param {MenuList} menu
+	     * @param {MenuList} parentMenu
+	     * @param {object} menuPosition
+	     * @param {object} screen
+	     */
+	
+	  }, {
+	    key: 'repositionForScreenEdges',
+	    value: function repositionForScreenEdges(menu, parentMenu, menuPosition, screen) {
 	      // Make sure to create a new instance
 	      var offset = {
 	        x: 0,
 	        y: 0
 	      };
 	
-	      // Width
-	      if (el.offsetWidth > position.right) {
-	        offset.x -= el.offsetWidth - this.props.overlap * 2;
+	      // Reposition on x-axis if dropdown is over the right edge of the screen
+	      if (menu.offsetWidth > menuPosition.right) {
+	        offset.x -= menu.offsetWidth - this.props.overlap * 2;
 	
 	        // Open the menu to the left of the parent if we have no room
-	        if (parentList) {
-	          offset.x -= parentList.offsetWidth;
+	        if (parentMenu) {
+	          offset.x -= parentMenu.offsetWidth;
 	        }
 	
 	        // Ensure the menu is always connected
@@ -1508,9 +1532,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 	
-	      // Height
-	      if (el.clientHeight > position.bottom) {
-	        offset.y = position.bottom - el.clientHeight - this.props.scrollbar.height - this.props.overlap;
+	      // Reposition on y-axis if dropdown is over the bottom edge of the screen
+	      if (menu.clientHeight > menuPosition.bottom) {
+	        offset.y = menuPosition.bottom - menu.clientHeight - this.props.scrollbar.height - this.props.overlap;
 	
 	        // Ensure the menu is always connected to it's parent node
 	        if (screen.bottom < 0) {
@@ -1518,9 +1542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 	
-	      this.setState({
-	        offset: offset
-	      });
+	      return offset;
 	    }
 	
 	    /**
@@ -1536,7 +1558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return null;
 	      }
 	      return _react2.default.createElement(MenuList, _extends({}, this.props, {
-	        parent: this,
+	        parent: this.refs.list,
 	        items: item.menu
 	      }));
 	    }
@@ -1604,11 +1626,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      // Used to position for context menus
 	      if (_typeof(this.props.offsetMenu) === 'object' && !this.props.parent) {
-	        styles.left += this.props.offsetMenu.left || 0;
-	        styles.top += this.props.offsetMenu.top || 0;
+	        styles.left += this.props.offsetMenu.x || 0;
+	        styles.top += this.props.offsetMenu.y || 0;
 	      }
 	
 	      return _react2.default.createElement('ul', {
+	        ref: 'list',
 	        style: styles,
 	        className: (0, _classnames2.default)('dropdown-menu--list', _dropdownMenu2.default.list)
 	      }, this.getItems().map(function (menuItem, index) {
@@ -1653,8 +1676,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  className: _propTypes2.default.string,
 	  active: _propTypes2.default.bool,
 	  scrollbar: _propTypes2.default.object,
-	  overlay: _propTypes2.default.number,
-	  items: _propTypes2.default.arrayOf(_propTypes2.default.object)
+	  overlap: _propTypes2.default.number,
+	  items: _propTypes2.default.arrayOf(_propTypes2.default.object),
+	  parent: _propTypes2.default.object,
+	  offsetMenu: _propTypes2.default.shape({
+	    x: _propTypes2.default.number.isRequired,
+	    y: _propTypes2.default.number.isRequired
+	  })
 	};
 
 /***/ }),
@@ -2443,12 +2471,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_19__;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_20__;
 
 /***/ })
 /******/ ])

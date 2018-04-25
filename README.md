@@ -113,6 +113,7 @@ Below are is a sample of how to setup the loaders:
 2. `npm test`
 
 ## History
+* 1.1.1 - Switched to react-transition-group 1.x (React 16 compatibility)
 * 1.1.0 - Fixed positioning bug with fixed position containers
 * 1.0.1 - Updated babel preset to env
 * 0.5.0 - Removed ReactDOM.findDOMNode which allows compatibility with React 16

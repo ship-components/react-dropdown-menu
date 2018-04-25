@@ -21,7 +21,7 @@ module.exports = {
     'react-dom': true,
     'ship-components-highlight-click': true,
     'ship-components-outsideclick': true,
-    'react-addons-css-transition-group': true
+    'react-transition-group': true
   },
 
   module: {

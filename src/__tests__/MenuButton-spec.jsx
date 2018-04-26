@@ -1,7 +1,7 @@
 jest.unmock('../MenuButton');
 
 // Don't need to test these and they currently throw errors
-jest.setMock('react-addons-css-transition-group', 'div');
+jest.mock('react-transition-group', () => ({ CSSTransitionGroup: () => <div /> }));
 jest.setMock('ship-components-highlight-click', 'div');
 
 import React from 'react';

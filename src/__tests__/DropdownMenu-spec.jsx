@@ -1,7 +1,7 @@
 jest.unmock('../DropdownMenu');
 
 // Don't need to test these and they currently throw errors
-jest.setMock('react-addons-css-transition-group', 'div');
+jest.setMock('react-transition-group', 'div');
 jest.setMock('ship-components-outsideclick', 'div');
 jest.setMock('ship-components-highlight-click', 'div');
 

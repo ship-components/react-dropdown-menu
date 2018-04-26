@@ -1,6 +1,6 @@
 {
   "name": "ship-components-dropdown-menu",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Material Design React Dropdown Menu",
   "main": "src/DropdownMenu.jsx",
   "scripts": {
@@ -31,6 +31,10 @@
     {
       "name": "Sepand Assadi",
       "email": "sepand.assadi@sony.com"
+    },
+    {
+      "name": "Jared Boone",
+      "email": "jared.boone@sony.com"
     },
     {
       "name": "Chris Orescan",
@@ -97,8 +101,8 @@
   "dependencies": {
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
-    "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^15.6.2",
+    "react-transition-group": "^1.2.1",
     "ship-components-highlight-click": "^1.0.0",
     "ship-components-outsideclick": "^1.0.0"
   }

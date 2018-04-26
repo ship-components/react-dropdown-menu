@@ -1,7 +1,7 @@
 jest.unmock('../MenuList');
 
 // Don't need to test these and they currently throw errors
-jest.setMock('react-addons-css-transition-group', 'div');
+jest.setMock('react-transition-group', 'div');
 
 import React from 'react';
 import TestUtils from 'react-dom/test-utils';

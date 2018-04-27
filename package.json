@@ -8,7 +8,8 @@
     "build": "npm run test && grunt build",
     "lint": "./node_modules/eslint/bin/eslint.js src/*.jsx",
     "test": "grunt lint && ./node_modules/jest-cli/bin/jest.js --coverage",
-    "coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js -v"
+    "coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js -v",
+    "travis": "npm install --no-save trevor && trevor"
   },
   "repository": {
     "type": "git",
@@ -71,7 +72,7 @@
     "postcss-loader": "^0.7.0",
     "postcss-nested": "^1.0.0",
     "postcss-simple-vars": "^1.1.0",
-    "react-test-renderer": "^15.6.2",
+    "react-test-renderer": "^15.6.2 || ^16",
     "strict-loader": "^0.1.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.4",

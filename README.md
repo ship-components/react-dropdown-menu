@@ -113,6 +113,8 @@ Below are is a sample of how to setup the loaders:
 2. `npm test`
 
 ## History
+* 1.1.5 - fixed transition bug
+* 1.1.4 - fixed overlay bug
 * 1.1.3 - Updated ship-components-highlight-select (React 16 compatibility)
 * 1.1.2 - Updated React dependencies (React 16 compatibility)
 * 1.1.1 - Switched to react-transition-group 1.x (React 16 compatibility)

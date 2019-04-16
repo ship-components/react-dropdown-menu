@@ -26,6 +26,7 @@
 .menu {
   position: relative;
   display: inline-block;
+  transition: all 0.3s ease;
 }
 
 .item {
@@ -33,7 +34,6 @@
   font-size: 13px;
   position: relative;
   display: flex;
-  transition: all 0.3s ease;
   white-space: nowrap;
   color: #000;
   min-height: 42px;
